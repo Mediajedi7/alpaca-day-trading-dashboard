@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="60">
+<title>Alpaca Paper Trading — Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0e1117;--card:#161b24;--border:#252c3a;--text:#e6e9ef;--dim:#8b94a7;
+--green:#2ecc71;--red:#e74c3c;--amber:#f1c40f;--blue:#3b82f6;--purple:#a78bfa;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:24px}
+h1{font-size:22px;margin-bottom:2px}
+h2{font-size:15px;margin:0 0 12px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.sub{color:var(--dim);font-size:12px;margin-bottom:20px}
+.grid{display:grid;gap:16px}
+.cards{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px}
+.card .label{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.card .value{font-size:22px;font-weight:600;margin-top:4px}
+.card .delta{font-size:12px;margin-top:2px}
+.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.dim{color:var(--dim)}
+.section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--dim);text-align:left;font-weight:500;padding:6px 10px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+td{padding:7px 10px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge.ok{background:rgba(46,204,113,.15);color:var(--green)}
+.badge.halt{background:rgba(231,76,60,.18);color:var(--red)}
+.badge.idle{background:rgba(139,148,167,.15);color:var(--dim)}
+.badge.active{background:rgba(59,130,246,.15);color:var(--blue)}
+.two-col{grid-template-columns:1fr 1fr}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.strategy-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.strategy-head h3{font-size:15px}
+.strategy-desc{color:var(--dim);font-size:12px;margin-bottom:12px}
+.plan p{margin-bottom:10px;color:#c4cad6}
+.plan b{color:var(--text)}
+.banner{border-radius:10px;padding:14px 18px;margin-bottom:16px;font-weight:600;display:flex;gap:10px;align-items:center}
+.banner.ok{background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.35);color:var(--green)}
+.banner.halt{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.4);color:var(--red)}
+.chart-wrap{height:280px}
+.muted-note{color:var(--dim);font-size:12px;font-style:italic}
+.kv{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.kv div span{color:var(--dim);font-size:11px;display:block;text-transform:uppercase}
+</style>
+</head>
+<body>
+<h1>📈 Alpaca Paper Trading</h1>
+<div class="sub">Generated <span id="gen"></span> · auto-refreshes every 60s · paper account (fake money, live data)</div>
+<div id="banner"></div>
+<div class="grid cards" id="cards"></div>
+
+<div class="section">
+  <h2>Equity Growth — Last 3 Months</h2>
+  <div class="chart-wrap"><canvas id="equityChart"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>Open Positions</h2>
+  <div id="positions"></div>
+</div>
+
+<div class="grid two-col">
+  <div class="section">
+    <div class="strategy-head"><h3>🏛️ Congressional Trades</h3><span id="congress-badge"></span></div>
+    <div class="strategy-desc">Mirrors politician stock buys from Capitol Trades. Max 2 positions/day,
+    $1,000 per pick, 2.5% trailing stop. Exits early if the politician sells.</div>
+    <div id="congress"></div>
+  </div>
+  <div class="section">
+    <div class="strategy-head"><h3>🎡 Wheel Strategy</h3><span id="wheel-badge"></span></div>
+    <div class="strategy-desc">Sells cash-secured puts ~10% below price (14–28 DTE); if assigned,
+    sells covered calls above cost basis. Closes early at 50% profit. Collects premium continuously.</div>
+    <div id="wheel"></div>
+  </div>
+  <div class="section">
+    <div class="strategy-head"><h3>🥷 Sneaky Pivot</h3><span id="pivot-badge"></span></div>
+    <div class="strategy-desc">Buys liquidity-sweep reversals: yesterday swept below a swing low and
+    closed strong on high volume. 2:1 target, trail activates at +1.5R. Max $150 risk/trade.</div>
+    <div id="pivot"></div>
+  </div>
+  <div class="section">
+    <div class="strategy-head"><h3>🚀 Gap and Go</h3><span id="gap-badge"></span></div>
+    <div class="strategy-desc">Buys stocks gapping up ≥2% pre-market with volume; stop below the gap,
+    2:1 target, everything closed by 11 AM. Max $150 risk/trade.</div>
+    <div id="gap"></div>
+  </div>
+</div>
+
+<div class="section plan">
+  <h2>The Overall Plan</h2>
+  <p><b>Goal:</b> prove out four independent automated strategies with fake money against live market
+  data, building a track record before any real capital is considered.</p>
+  <p><b>Diversification of edge:</b> each strategy exploits a different inefficiency — political
+  insider signal (Congressional), volatility premium selling (Wheel), liquidity-sweep reversals
+  (Sneaky Pivot), and opening momentum (Gap &amp; Go). They rarely correlate: a bad day for momentum
+  can still be a good day for premium collection.</p>
+  <p><b>Risk framework:</b> every strategy passes through <code>risk_guard</code> — $300 intraday
+  loss limit, $5,000 max invested, plus a $500 daily loss cap on the congressional runner. Any halt
+  requires a manual review and an explicit <code>resume_trading.py</code> — nothing auto-resumes
+  after losses.</p>
+  <p><b>Operations:</b> everything runs in Docker on the NAS via supercronic, scripts are wrapped by
+  a watchdog that emails on any crash, and code deploys automatically via git pull every 5 minutes.
+  Morning plan, end-of-day results, and a Friday scorecard arrive by email.</p>
+  <p><b>What success looks like:</b> consistent positive expectancy per strategy measured in
+  R-multiples, drawdowns contained by the risk caps, and zero unreviewed losing streaks.</p>
+</div>
+
+<div class="grid two-col">
+  <div class="section">
+    <h2>Recent Pivot Trades</h2>
+    <div id="pivot-history"></div>
+  </div>
+  <div class="section">
+    <h2>Recent Gap Trades</h2>
+    <div id="gap-history"></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Congressional Runner — Daily Log</h2>
+  <div id="daily-history"></div>
+</div>
+
+<script>
+const D = {"generated_at": "2026-06-11 22:25:15", "account": {"equity": 99320.83, "last_equity": 99310.21, "cash": 98493.42, "buying_power": 392063.46, "day_pnl": 10.62, "day_pnl_pct": 0.01}, "history": [{"date": "2026-05-18", "equity": 100000.0}, {"date": "2026-05-19", "equity": 100000.0}, {"date": "2026-05-20", "equity": 100000.0}, {"date": "2026-05-21", "equity": 100000.0}, {"date": "2026-05-22", "equity": 100000.0}, {"date": "2026-05-26", "equity": 100000.0}, {"date": "2026-05-27", "equity": 100000.0}, {"date": "2026-05-28", "equity": 100000.0}, {"date": "2026-05-29", "equity": 100000.0}, {"date": "2026-06-01", "equity": 100000.0}, {"date": "2026-06-02", "equity": 100000.0}, {"date": "2026-06-03", "equity": 100000.0}, {"date": "2026-06-04", "equity": 100000.0}, {"date": "2026-06-05", "equity": 99958.82}, {"date": "2026-06-08", "equity": 99965.14}, {"date": "2026-06-09", "equity": 99317.3}, {"date": "2026-06-10", "equity": 99310.21}], "growth": {"start": 100000.0, "end": 99310.21, "abs": -689.79, "pct": -0.69, "days": 17}, "positions": [{"symbol": "SNAP260626P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.13, "market_val": -13.0, "unreal_pnl": -4.0, "unreal_pct": -44.44}, {"symbol": "SNAP260702P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.2, "market_val": -20.0, "unreal_pnl": -11.0, "unreal_pct": -122.22}, {"symbol": "T", "qty": "20", "side": "long", "asset_class": "us_equity", "avg_entry": 22.69, "current": 23.06, "market_val": 461.2, "unreal_pnl": 7.49, "unreal_pct": 1.65}, {"symbol": "TSLA", "qty": "1", "side": "long", "asset_class": "us_equity", "avg_entry": 421.48, "current": 399.21, "market_val": 399.21, "unreal_pnl": -22.27, "unreal_pct": -5.28}], "halt": null, "wheel_state": {"SNAP": {"symbol": "SNAP", "stage": 1, "qty": 1, "contract_symbol": "SNAP260702P00005000", "contract_type": "put", "strike": 5.0, "expiry": "2026-07-02", "entry_premium": 0.09, "cost_basis": null, "total_premium_collected": 18.0, "cycles": 1, "current_cycle_start": "2026-06-05T09:58:16.778508", "log": [{"time": "2026-06-08T09:46:37.891324", "msg": "Opened CSP SNAP260626P00005000 @ $0.09  total premium: $9.00"}, {"time": "2026-06-09T10:40:36.807292", "msg": "PUT closed early at $0.04 (55.6% profit). Total premium: $9.00"}, {"time": "2026-06-09T10:40:40.292245", "msg": "Opened CSP SNAP260702P00005000 @ $0.09  total premium: $18.00"}], "status": "active"}, "SOFI": {"symbol": "SOFI", "stage": 1, "qty": 1, "contract_symbol": null, "contract_type": null, "strike": null, "expiry": null, "entry_premium": null, "cost_basis": null, "total_premium_collected": 0.0, "cycles": 0, "current_cycle_start": "2026-06-05T10:12:27.852618", "log": []}}, "pivot_setups": [], "pivot_log": [], "gap_setups_raw": {"date": "2026-06-11", "scanned_at": "2026-06-11T22:26:25.613282+00:00", "total_found": 11, "setups": [{"symbol": "LCID", "gap_pct": 9.87, "prev_close": 4.71, "premarket_px": 5.17, "premarket_vol": 888064, "vol_ratio": 1.42, "stop_price": 4.66, "target_price": 6.21, "qty": 291, "est_risk": 149.87, "est_val": 1505.92, "has_news": false, "news": [], "score": 23.86, "status": "pending", "scanned_at": "2026-06-11T22:26:24.775580+00:00"}, {"symbol": "MSTR", "gap_pct": 4.23, "prev_close": 115.34, "premarket_px": 120.22, "premarket_vol": 908704, "vol_ratio": 3.13, "stop_price": 114.19, "target_price": 132.29, "qty": 16, "est_risk": 96.56, "est_val": 1923.6, "has_news": false, "news": [], "score": 16.92, "status": "pending", "scanned_at": "2026-06-11T22:26:24.660235+00:00"}, {"symbol": "HOOD", "gap_pct": 6.87, "prev_close": 86.32, "premarket_px": 92.25, "premarket_vol": 1354307, "vol_ratio": 1.22, "stop_price": 85.46, "target_price": 105.83, "qty": 21, "est_risk": 142.59, "est_val": 1937.25, "has_news": false, "news": [], "score": 15.27, "status": "pending", "scanned_at": "2026-06-11T22:26:25.151747+00:00"}]}, "gap_log": [], "congress_picks": [{"symbol": "T", "action": "buy", "asset_type": "stock", "score": 100.6, "price": 23.14, "filed_date": "8 Jun 2026", "size": "50K-100K", "politician": "Tim Moore", "consensus": 4, "qty": 43}, {"symbol": "BWXT", "action": "buy", "asset_type": "stock", "score": 95.6, "price": 184.03, "filed_date": "8 Jun 2026", "size": "15K-50K", "politician": "April McClain Delaney", "consensus": 5, "qty": 5}, {"symbol": "MSFT", "action": "buy", "asset_type": "stock", "score": 86.6, "price": 402.81, "filed_date": "19 May 2026", "size": "250K-500K", "politician": "Josh Gottheimer", "consensus": 5, "qty": 2}, {"symbol": "AAPL", "action": "buy", "asset_type": "stock", "score": 85.8, "price": 291.36, "filed_date": "4 Jun 2026", "size": "1K-15K", "politician": "Cleo Fields", "consensus": 4, "qty": 2}], "daily_log": [{"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"MSFT": "error: 'charmap' codec can't encode character '\\u2192' in position 53: character maps to <undefined>", "T": "error: 'charmap' codec can't encode character '\\u2192' in position 52: character maps to <undefined>"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}]};
+const fmt$ = n => (n<0?"-$":"$") + Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+const cls = n => n > 0 ? "green" : n < 0 ? "red" : "dim";
+const sign = n => (n>0?"+":"") ;
+
+document.getElementById("gen").textContent = D.generated_at;
+
+// Banner
+const banner = document.getElementById("banner");
+if (D.halt && (D.halt.halted || D.halt.review_required)) {
+  banner.innerHTML = `<div class="banner halt">⛔ TRADING HALTED — ${D.halt.reason || "review required"}.
+  Run resume_trading.py after review.</div>`;
+} else {
+  banner.innerHTML = `<div class="banner ok">✅ All systems normal — no halt active, strategies trading on schedule.</div>`;
+}
+
+// Summary cards
+const a = D.account, g = D.growth || {};
+let cards = "";
+if (!a.error) {
+  cards += `<div class="card"><div class="label">Equity</div><div class="value">${fmt$(a.equity)}</div>
+    <div class="delta ${cls(a.day_pnl)}">${sign(a.day_pnl)}${fmt$(a.day_pnl)} (${sign(a.day_pnl_pct)}${a.day_pnl_pct}%) today</div></div>`;
+  cards += `<div class="card"><div class="label">Cash</div><div class="value">${fmt$(a.cash)}</div></div>`;
+  cards += `<div class="card"><div class="label">Buying Power</div><div class="value">${fmt$(a.buying_power)}</div></div>`;
+} else {
+  cards += `<div class="card"><div class="label">Account</div><div class="value red">error</div><div class="delta dim">${a.error}</div></div>`;
+}
+if (!g.error && g.end) {
+  cards += `<div class="card"><div class="label">3-Month Growth</div>
+    <div class="value ${cls(g.abs)}">${sign(g.pct)}${g.pct}%</div>
+    <div class="delta ${cls(g.abs)}">${sign(g.abs)}${fmt$(g.abs)} over ${g.days} sessions</div></div>`;
+}
+cards += `<div class="card"><div class="label">Open Positions</div><div class="value">${(D.positions||[]).length}</div></div>`;
+document.getElementById("cards").innerHTML = cards;
+
+// Equity chart
+if (D.history && D.history.length) {
+  new Chart(document.getElementById("equityChart"), {
+    type: "line",
+    data: { labels: D.history.map(p=>p.date),
+      datasets: [{ data: D.history.map(p=>p.equity), borderColor:"#3b82f6",
+        backgroundColor:"rgba(59,130,246,.08)", fill:true, tension:.25, pointRadius:0, borderWidth:2 }]},
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{callbacks:{label:c=>fmt$(c.parsed.y)}}},
+      scales:{ x:{ticks:{color:"#8b94a7",maxTicksLimit:10},grid:{color:"#252c3a"}},
+               y:{ticks:{color:"#8b94a7",callback:v=>"$"+v.toLocaleString()},grid:{color:"#252c3a"}}}}
+  });
+}
+
+// Positions table
+const posEl = document.getElementById("positions");
+if ((D.positions||[]).length) {
+  posEl.innerHTML = `<table><tr><th>Symbol</th><th>Type</th><th>Qty</th><th>Avg Entry</th>
+  <th>Current</th><th>Market Value</th><th>Unrealized P&amp;L</th></tr>` +
+  D.positions.map(p=>`<tr><td><b>${p.symbol}</b></td><td>${p.asset_class==="us_option"?"Option":"Stock"}</td>
+  <td>${p.qty}</td><td>${fmt$(p.avg_entry)}</td><td>${fmt$(p.current)}</td><td>${fmt$(p.market_val)}</td>
+  <td class="${cls(p.unreal_pnl)}">${sign(p.unreal_pnl)}${fmt$(p.unreal_pnl)} (${sign(p.unreal_pct)}${p.unreal_pct}%)</td></tr>`).join("") + "</table>";
+} else {
+  posEl.innerHTML = `<div class="muted-note">No open positions right now.</div>`;
+}
+
+// Congressional
+const cp = D.congress_picks || [];
+document.getElementById("congress-badge").innerHTML =
+  cp.length ? `<span class="badge active">${cp.length} pick(s) today</span>` : `<span class="badge idle">no picks</span>`;
+document.getElementById("congress").innerHTML = cp.length ?
+  `<table><tr><th>Symbol</th><th>Score</th><th>Qty</th><th>Politician</th><th>Size</th></tr>` +
+  cp.map(p=>`<tr><td><b>${p.symbol}</b></td><td>${p.score}</td><td>${p.qty}</td>
+  <td>${p.politician||"?"}</td><td>${p.size||"?"}</td></tr>`).join("") + "</table>"
+  : `<div class="muted-note">No qualifying congressional picks today.</div>`;
+
+// Wheel
+const ws = D.wheel_state || {};
+const wheelSyms = Object.keys(ws);
+const activeWheels = wheelSyms.filter(s=>ws[s].contract_symbol || ws[s].stage===2);
+document.getElementById("wheel-badge").innerHTML =
+  activeWheels.length ? `<span class="badge active">${activeWheels.length} active</span>` : `<span class="badge idle">idle</span>`;
+document.getElementById("wheel").innerHTML = wheelSyms.length ?
+  `<table><tr><th>Symbol</th><th>Stage</th><th>Contract</th><th>Strike</th><th>Expiry</th><th>Premium Collected</th><th>Cycles</th></tr>` +
+  wheelSyms.map(s=>{const w=ws[s];return `<tr><td><b>${s}</b></td>
+  <td>${w.stage===1?"1 — CSP":"2 — Covered Call"}</td>
+  <td>${w.contract_symbol||"<span class='dim'>none</span>"}</td>
+  <td>${w.strike?("$"+w.strike):"—"}</td><td>${w.expiry||"—"}</td>
+  <td class="green">$${(w.total_premium_collected||0).toFixed(2)}</td><td>${w.cycles||0}</td></tr>`;}).join("") + "</table>"
+  : `<div class="muted-note">No wheel positions yet.</div>`;
+
+// Pivot
+const ps = D.pivot_setups || [];
+document.getElementById("pivot-badge").innerHTML =
+  ps.length ? `<span class="badge active">${ps.length} setup(s)</span>` : `<span class="badge idle">no setups</span>`;
+document.getElementById("pivot").innerHTML = ps.length ?
+  `<table><tr><th>Symbol</th><th>Entry</th><th>Stop</th><th>Target</th><th>Qty</th><th>Risk</th><th>Status</th></tr>` +
+  ps.map(s=>`<tr><td><b>${s.symbol}</b></td><td>${fmt$(s.est_entry)}</td><td>${fmt$(s.stop_price)}</td>
+  <td>${fmt$(s.target_price)}</td><td>${s.qty}</td><td>${fmt$(s.est_total_risk)}</td><td>${s.status}</td></tr>`).join("") + "</table>"
+  : `<div class="muted-note">No qualifying pivot setups today — the pattern is selective by design.</div>`;
+
+// Gap
+const gs = (D.gap_setups_raw||{}).setups || [];
+const gapDate = (D.gap_setups_raw||{}).date || "";
+document.getElementById("gap-badge").innerHTML =
+  gs.length ? `<span class="badge active">${gs.length} setup(s) ${gapDate}</span>` : `<span class="badge idle">no setups</span>`;
+document.getElementById("gap").innerHTML = gs.length ?
+  `<table><tr><th>Symbol</th><th>Gap %</th><th>Stop</th><th>Target</th><th>Qty</th><th>News</th><th>Status</th></tr>` +
+  gs.map(s=>`<tr><td><b>${s.symbol}</b></td><td class="green">+${s.gap_pct}%</td><td>${fmt$(s.stop_price)}</td>
+  <td>${fmt$(s.target_price)}</td><td>${s.qty}</td><td>${s.has_news?"📰":"—"}</td><td>${s.status}</td></tr>`).join("") + "</table>"
+  : `<div class="muted-note">No qualifying gap setups for ${gapDate||"today"}.</div>`;
+
+// Trade history tables
+function historyTable(rows, cols) {
+  if (!rows || !rows.length) return `<div class="muted-note">No trades recorded yet.</div>`;
+  return `<table><tr>${cols.map(c=>`<th>${c.h}</th>`).join("")}</tr>` +
+    rows.slice().reverse().map(r=>`<tr>${cols.map(c=>`<td class="${c.cls?c.cls(r):''}">${c.f(r)}</td>`).join("")}</tr>`).join("") + "</table>";
+}
+document.getElementById("pivot-history").innerHTML = historyTable(D.pivot_log, [
+  {h:"Date", f:r=>r.date}, {h:"Symbol", f:r=>`<b>${r.symbol}</b>`},
+  {h:"Entry", f:r=>fmt$(r.entry_price)}, {h:"Exit", f:r=>fmt$(r.exit_price)},
+  {h:"P&L", f:r=>sign(r.realized_pnl)+fmt$(r.realized_pnl), cls:r=>cls(r.realized_pnl)},
+  {h:"R", f:r=>(r.pnl_r>0?"+":"")+r.pnl_r+"R"}, {h:"Reason", f:r=>r.reason}]);
+document.getElementById("gap-history").innerHTML = historyTable(D.gap_log, [
+  {h:"Date", f:r=>r.date}, {h:"Symbol", f:r=>`<b>${r.symbol}</b>`},
+  {h:"Gap", f:r=>"+"+r.gap_pct+"%"}, {h:"Entry", f:r=>fmt$(r.entry)}, {h:"Exit", f:r=>fmt$(r.exit)},
+  {h:"P&L", f:r=>sign(r.pnl)+fmt$(r.pnl), cls:r=>cls(r.pnl)},
+  {h:"R", f:r=>(r.r_multiple>0?"+":"")+r.r_multiple+"R"}, {h:"Exit Reason", f:r=>r.exit_reason}]);
+document.getElementById("daily-history").innerHTML = historyTable(D.daily_log, [
+  {h:"Date", f:r=>r.date},
+  {h:"Picks", f:r=>(r.picks||[]).map(p=>p.symbol).join(", ")||"—"},
+  {h:"Status", f:r=>r.status},
+  {h:"Results", f:r=>r.results?Object.entries(r.results).map(([s,o])=>`${s}: ${o}`).join("<br>"):"—"}]);
+</script>
+</body>
+</html>
