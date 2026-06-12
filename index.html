@@ -46,38 +46,20 @@ font-family:Rajdhani,sans-serif;text-transform:uppercase;letter-spacing:.05em;fo
 .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media(max-width:900px){
   .two-col{grid-template-columns:1fr}
-  body{padding:10px}
-  h1{font-size:22px}
-  h2{font-size:16px;margin-bottom:10px}
-  .topbar{padding-bottom:10px;margin-bottom:14px}
-  .sub{font-size:10.5px}
-  .card{padding:12px 14px;border-radius:14px}
-  .card .value{font-size:19px}
-  .card .label{font-size:10px}
-  .card .delta{font-size:11px}
-  .cards{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-  .section{padding:14px 12px;border-radius:14px;margin-bottom:12px}
-  .banner{font-size:12.5px;padding:10px 14px;border-radius:14px;line-height:1.35}
-  .chart-wrap{height:190px}
-  .strategy-head{flex-wrap:wrap;gap:6px}
-  .strategy-head h3{font-size:17px}
-  .strategy-desc{font-size:12px}
-  .badge{font-size:11px;padding:3px 10px}
-  .plan p{font-size:13px}
+  body{padding:12px}
+  h1{font-size:24px}
+  h2{font-size:17px}
+  .card .value{font-size:22px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .section{padding:16px;border-radius:14px}
+  .banner{font-size:14px;padding:11px 16px;border-radius:14px}
+  .chart-wrap{height:200px}
+  .modal{padding:20px 18px;border-radius:16px;width:96%;max-height:88vh;overflow-y:auto}
+  .modal h3{font-size:20px}
   .strat-toggle{font-size:15px;padding:12px 14px}
-  .strat-body{font-size:12.5px;padding:12px 14px 14px}
-  .strat-body dl{grid-template-columns:1fr;gap:2px}
-  .strat-body dt{margin-top:8px}
-  table{font-size:12px;min-width:520px}
-  th{font-size:10.5px;padding:5px 7px}
-  td{padding:9px 7px}
-  /* Modal becomes a bottom sheet on phones */
-  .modal-bg.open{align-items:flex-end}
-  .modal{width:100%;max-width:100%;border-radius:20px 20px 0 0;padding:22px 18px 30px;
-    max-height:85vh;overflow-y:auto;border-bottom:none}
-  .modal h3{font-size:21px}
-  .modal-val{font-size:13px;max-width:200px}
-  .modal-why{font-size:12.5px;padding:12px 14px}
+  table{font-size:12px}
+  th{font-size:11px;padding:5px 8px}
+  td{padding:7px 8px}
 }
 .strategy-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .strategy-head h3{font-family:Rajdhani,sans-serif;font-size:20px;font-weight:600}
@@ -314,7 +296,7 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
 </div>
 
 <script>
-const D = {"generated_at": "2026-06-11 23:12:10", "account": {"equity": 99320.57, "last_equity": 99310.21, "cash": 98493.42, "buying_power": 392062.94, "day_pnl": 10.36, "day_pnl_pct": 0.01}, "history": [{"date": "2026-05-18", "equity": 100000.0}, {"date": "2026-05-19", "equity": 100000.0}, {"date": "2026-05-20", "equity": 100000.0}, {"date": "2026-05-21", "equity": 100000.0}, {"date": "2026-05-22", "equity": 100000.0}, {"date": "2026-05-26", "equity": 100000.0}, {"date": "2026-05-27", "equity": 100000.0}, {"date": "2026-05-28", "equity": 100000.0}, {"date": "2026-05-29", "equity": 100000.0}, {"date": "2026-06-01", "equity": 100000.0}, {"date": "2026-06-02", "equity": 100000.0}, {"date": "2026-06-03", "equity": 100000.0}, {"date": "2026-06-04", "equity": 100000.0}, {"date": "2026-06-05", "equity": 99958.82}, {"date": "2026-06-08", "equity": 99965.14}, {"date": "2026-06-09", "equity": 99317.3}, {"date": "2026-06-10", "equity": 99310.21}], "growth": {"start": 100000.0, "end": 99310.21, "abs": -689.79, "pct": -0.69, "days": 17}, "positions": [{"symbol": "SNAP260626P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.13, "market_val": -13.0, "unreal_pnl": -4.0, "unreal_pct": -44.44}, {"symbol": "SNAP260702P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.2, "market_val": -20.0, "unreal_pnl": -11.0, "unreal_pct": -122.22}, {"symbol": "T", "qty": "20", "side": "long", "asset_class": "us_equity", "avg_entry": 22.69, "current": 23.06, "market_val": 461.2, "unreal_pnl": 7.49, "unreal_pct": 1.65}, {"symbol": "TSLA", "qty": "1", "side": "long", "asset_class": "us_equity", "avg_entry": 421.48, "current": 398.95, "market_val": 398.95, "unreal_pnl": -22.53, "unreal_pct": -5.34}], "halt": null, "wheel_state": {"SNAP": {"symbol": "SNAP", "stage": 1, "qty": 1, "contract_symbol": "SNAP260702P00005000", "contract_type": "put", "strike": 5.0, "expiry": "2026-07-02", "entry_premium": 0.09, "cost_basis": null, "total_premium_collected": 18.0, "cycles": 1, "current_cycle_start": "2026-06-05T09:58:16.778508", "log": [{"time": "2026-06-08T09:46:37.891324", "msg": "Opened CSP SNAP260626P00005000 @ $0.09  total premium: $9.00"}, {"time": "2026-06-09T10:40:36.807292", "msg": "PUT closed early at $0.04 (55.6% profit). Total premium: $9.00"}, {"time": "2026-06-09T10:40:40.292245", "msg": "Opened CSP SNAP260702P00005000 @ $0.09  total premium: $18.00"}], "status": "active"}, "SOFI": {"symbol": "SOFI", "stage": 1, "qty": 1, "contract_symbol": null, "contract_type": null, "strike": null, "expiry": null, "entry_premium": null, "cost_basis": null, "total_premium_collected": 0.0, "cycles": 0, "current_cycle_start": "2026-06-05T10:12:27.852618", "log": []}}, "pivot_setups": [], "pivot_log": [], "gap_setups_raw": {}, "gap_log": [], "congress_picks": [{"symbol": "T", "action": "buy", "asset_type": "stock", "score": 100.6, "price": 23.14, "filed_date": "8 Jun 2026", "size": "50K-100K", "politician": "Tim Moore", "consensus": 4, "qty": 43}, {"symbol": "BWXT", "action": "buy", "asset_type": "stock", "score": 95.6, "price": 184.03, "filed_date": "8 Jun 2026", "size": "15K-50K", "politician": "April McClain Delaney", "consensus": 5, "qty": 5}, {"symbol": "MSFT", "action": "buy", "asset_type": "stock", "score": 86.6, "price": 402.81, "filed_date": "19 May 2026", "size": "250K-500K", "politician": "Josh Gottheimer", "consensus": 5, "qty": 2}, {"symbol": "AAPL", "action": "buy", "asset_type": "stock", "score": 85.8, "price": 291.36, "filed_date": "4 Jun 2026", "size": "1K-15K", "politician": "Cleo Fields", "consensus": 4, "qty": 2}], "daily_log": [{"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"MSFT": "error: 'charmap' codec can't encode character '\\u2192' in position 53: character maps to <undefined>", "T": "error: 'charmap' codec can't encode character '\\u2192' in position 52: character maps to <undefined>"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}]};
+const D = {"generated_at": "2026-06-11 23:15:00", "account": {"equity": 99320.66, "last_equity": 99310.21, "cash": 98493.42, "buying_power": 392063.12, "day_pnl": 10.45, "day_pnl_pct": 0.01}, "history": [{"date": "2026-05-18", "equity": 100000.0}, {"date": "2026-05-19", "equity": 100000.0}, {"date": "2026-05-20", "equity": 100000.0}, {"date": "2026-05-21", "equity": 100000.0}, {"date": "2026-05-22", "equity": 100000.0}, {"date": "2026-05-26", "equity": 100000.0}, {"date": "2026-05-27", "equity": 100000.0}, {"date": "2026-05-28", "equity": 100000.0}, {"date": "2026-05-29", "equity": 100000.0}, {"date": "2026-06-01", "equity": 100000.0}, {"date": "2026-06-02", "equity": 100000.0}, {"date": "2026-06-03", "equity": 100000.0}, {"date": "2026-06-04", "equity": 100000.0}, {"date": "2026-06-05", "equity": 99958.82}, {"date": "2026-06-08", "equity": 99965.14}, {"date": "2026-06-09", "equity": 99317.3}, {"date": "2026-06-10", "equity": 99310.21}], "growth": {"start": 100000.0, "end": 99310.21, "abs": -689.79, "pct": -0.69, "days": 17}, "positions": [{"symbol": "SNAP260626P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.13, "market_val": -13.0, "unreal_pnl": -4.0, "unreal_pct": -44.44}, {"symbol": "SNAP260702P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.2, "market_val": -20.0, "unreal_pnl": -11.0, "unreal_pct": -122.22}, {"symbol": "T", "qty": "20", "side": "long", "asset_class": "us_equity", "avg_entry": 22.69, "current": 23.06, "market_val": 461.2, "unreal_pnl": 7.49, "unreal_pct": 1.65}, {"symbol": "TSLA", "qty": "1", "side": "long", "asset_class": "us_equity", "avg_entry": 421.48, "current": 399.04, "market_val": 399.04, "unreal_pnl": -22.44, "unreal_pct": -5.32}], "halt": null, "wheel_state": {"SNAP": {"symbol": "SNAP", "stage": 1, "qty": 1, "contract_symbol": "SNAP260702P00005000", "contract_type": "put", "strike": 5.0, "expiry": "2026-07-02", "entry_premium": 0.09, "cost_basis": null, "total_premium_collected": 18.0, "cycles": 1, "current_cycle_start": "2026-06-05T09:58:16.778508", "log": [{"time": "2026-06-08T09:46:37.891324", "msg": "Opened CSP SNAP260626P00005000 @ $0.09  total premium: $9.00"}, {"time": "2026-06-09T10:40:36.807292", "msg": "PUT closed early at $0.04 (55.6% profit). Total premium: $9.00"}, {"time": "2026-06-09T10:40:40.292245", "msg": "Opened CSP SNAP260702P00005000 @ $0.09  total premium: $18.00"}], "status": "active"}, "SOFI": {"symbol": "SOFI", "stage": 1, "qty": 1, "contract_symbol": null, "contract_type": null, "strike": null, "expiry": null, "entry_premium": null, "cost_basis": null, "total_premium_collected": 0.0, "cycles": 0, "current_cycle_start": "2026-06-05T10:12:27.852618", "log": []}}, "pivot_setups": [], "pivot_log": [], "gap_setups_raw": {"date": "2026-06-11", "scanned_at": "2026-06-11T22:26:25.613282+00:00", "total_found": 11, "setups": [{"symbol": "LCID", "gap_pct": 9.87, "prev_close": 4.71, "premarket_px": 5.17, "premarket_vol": 888064, "vol_ratio": 1.42, "stop_price": 4.66, "target_price": 6.21, "qty": 291, "est_risk": 149.87, "est_val": 1505.92, "has_news": false, "news": [], "score": 23.86, "status": "pending", "scanned_at": "2026-06-11T22:26:24.775580+00:00"}, {"symbol": "MSTR", "gap_pct": 4.23, "prev_close": 115.34, "premarket_px": 120.22, "premarket_vol": 908704, "vol_ratio": 3.13, "stop_price": 114.19, "target_price": 132.29, "qty": 16, "est_risk": 96.56, "est_val": 1923.6, "has_news": false, "news": [], "score": 16.92, "status": "pending", "scanned_at": "2026-06-11T22:26:24.660235+00:00"}, {"symbol": "HOOD", "gap_pct": 6.87, "prev_close": 86.32, "premarket_px": 92.25, "premarket_vol": 1354307, "vol_ratio": 1.22, "stop_price": 85.46, "target_price": 105.83, "qty": 21, "est_risk": 142.59, "est_val": 1937.25, "has_news": false, "news": [], "score": 15.27, "status": "pending", "scanned_at": "2026-06-11T22:26:25.151747+00:00"}]}, "gap_log": [], "congress_picks": [{"symbol": "T", "action": "buy", "asset_type": "stock", "score": 100.6, "price": 23.14, "filed_date": "8 Jun 2026", "size": "50K-100K", "politician": "Tim Moore", "consensus": 4, "qty": 43}, {"symbol": "BWXT", "action": "buy", "asset_type": "stock", "score": 95.6, "price": 184.03, "filed_date": "8 Jun 2026", "size": "15K-50K", "politician": "April McClain Delaney", "consensus": 5, "qty": 5}, {"symbol": "MSFT", "action": "buy", "asset_type": "stock", "score": 86.6, "price": 402.81, "filed_date": "19 May 2026", "size": "250K-500K", "politician": "Josh Gottheimer", "consensus": 5, "qty": 2}, {"symbol": "AAPL", "action": "buy", "asset_type": "stock", "score": 85.8, "price": 291.36, "filed_date": "4 Jun 2026", "size": "1K-15K", "politician": "Cleo Fields", "consensus": 4, "qty": 2}], "daily_log": [{"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"MSFT": "error: 'charmap' codec can't encode character '\\u2192' in position 53: character maps to <undefined>", "T": "error: 'charmap' codec can't encode character '\\u2192' in position 52: character maps to <undefined>"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}]};
 const fmt$ = n => (n<0?"-$":"$") + Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 const cls = n => n > 0 ? "green" : n < 0 ? "red" : "dim";
 const sign = n => (n>0?"+":"") ;
@@ -365,33 +347,18 @@ if (D.history && D.history.length) {
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────────────
-// Modal payloads are stored here and referenced by index via data-m attributes.
-// (Inline onclick with JSON breaks: the JSON's quotes terminate the HTML attribute.)
-const MODALS = [];
-function modalAttr(symbol, strategy, rows, why) {
-  MODALS.push({symbol, strategy, rows, why});
-  return `data-m="${MODALS.length-1}"`;
-}
-function openModal(m) {
-  document.getElementById("modal-symbol").textContent = m.symbol;
-  document.getElementById("modal-strategy").textContent = m.strategy;
-  document.getElementById("modal-rows").innerHTML = m.rows.map(([k,v,c])=>
+function openModal(symbol, strategy, rows, why) {
+  document.getElementById("modal-symbol").textContent = symbol;
+  document.getElementById("modal-strategy").textContent = strategy;
+  document.getElementById("modal-rows").innerHTML = rows.map(([k,v,c])=>
     `<div class="modal-row"><div class="modal-key">${k}</div><div class="modal-val ${c||''}">${v}</div></div>`
   ).join("");
-  document.getElementById("modal-why").innerHTML = `<strong>Why this was chosen</strong>${m.why}`;
+  document.getElementById("modal-why").innerHTML = `<strong>Why this was chosen</strong>${why}`;
   document.getElementById("modal-bg").classList.add("open");
-  document.body.style.overflow = "hidden";
 }
-function closeModal(){
-  document.getElementById("modal-bg").classList.remove("open");
-  document.body.style.overflow = "";
-}
+function closeModal(){document.getElementById("modal-bg").classList.remove("open")}
 document.getElementById("modal-bg").addEventListener("click",e=>{if(e.target===e.currentTarget)closeModal()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-document.addEventListener("click",e=>{
-  const tr = e.target.closest("tr[data-m]");
-  if (tr) openModal(MODALS[+tr.dataset.m]);
-});
 
 function toggleStrat(btn){
   btn.classList.toggle("open");
@@ -414,7 +381,8 @@ if ((D.positions||[]).length) {
     else if(ps2){strat="Sneaky Pivot";why=`Liquidity sweep reversal pattern detected. Entry ${fmt$(ps2.est_entry)}, stop ${fmt$(ps2.stop_price)}, target ${fmt$(ps2.target_price)}. Risk: ${fmt$(ps2.est_total_risk)}.`;}
     else if(gs2){strat="Gap and Go";why=`Pre-market gap of +${gs2.gap_pct}%. ${gs2.has_news?"News catalyst present. ":"No confirmed news catalyst. "}Stop ${fmt$(gs2.stop_price)}, target ${fmt$(gs2.target_price)}.`;}
     const rows=[["Type",p.asset_class==="us_option"?"Option":"Stock"],["Qty",p.qty],["Avg Entry",fmt$(p.avg_entry)],["Current Price",fmt$(p.current)],["Market Value",fmt$(p.market_val)],["Unrealized P&L",sign(p.unreal_pnl)+fmt$(p.unreal_pnl)+" ("+sign(p.unreal_pct)+p.unreal_pct+"%)",cls(p.unreal_pnl)]];
-    return `<tr class="clickable" ${modalAttr(p.symbol,strat,rows,why)}><td><b>${p.symbol}</b></td><td>${p.asset_class==="us_option"?"Option":"Stock"}</td>
+    const onclick=`openModal(${JSON.stringify(p.symbol)},${JSON.stringify(strat)},${JSON.stringify(rows)},${JSON.stringify(why)})`;
+    return `<tr class="clickable" onclick="${onclick}"><td><b>${p.symbol}</b></td><td>${p.asset_class==="us_option"?"Option":"Stock"}</td>
     <td>${p.qty}</td><td>${fmt$(p.avg_entry)}</td><td>${fmt$(p.current)}</td><td>${fmt$(p.market_val)}</td>
     <td class="${cls(p.unreal_pnl)}">${sign(p.unreal_pnl)}${fmt$(p.unreal_pnl)} (${sign(p.unreal_pct)}${p.unreal_pct}%)</td>
     <td class="dim" style="font-size:11px">ℹ click</td></tr>`;
@@ -435,7 +403,8 @@ document.getElementById("congress").innerHTML = cp.length ?
       `Trade size disclosed: ${p.size||"unknown"}. Qty to buy: ${p.qty}. `+
       `Exits on a 2.5% trailing stop or if the same politician files a SELL.`;
     const rows=[["Score",p.score],["Qty to Buy",p.qty],["Politician",p.politician||"?"],["Size Filed",p.size||"?"]];
-    return `<tr class="clickable" ${modalAttr(p.symbol,"Congressional Trade",rows,why)}><td><b>${p.symbol}</b></td><td>${p.score}</td><td>${p.qty}</td>
+    const onclick=`openModal(${JSON.stringify(p.symbol)},"Congressional Trade",${JSON.stringify(rows)},${JSON.stringify(why)})`;
+    return `<tr class="clickable" onclick="${onclick}"><td><b>${p.symbol}</b></td><td>${p.score}</td><td>${p.qty}</td>
     <td>${p.politician||"?"}</td><td>${p.size||"?"}</td><td class="dim" style="font-size:11px">ℹ click</td></tr>`;
   }).join("") + "</table></div>"
   : `<div class="muted-note">No qualifying congressional picks today.</div>`;
@@ -459,7 +428,8 @@ document.getElementById("wheel").innerHTML = wheelSyms.length ?
         `Collecting premium while waiting for the stock to be called away above cost basis. `+
         `Contract: ${w.contract_symbol||"none"}. Total premium collected: $${(w.total_premium_collected||0).toFixed(2)} over ${w.cycles||0} cycle(s).`;
     const rows=[["Stage",stageName],["Contract",w.contract_symbol||"none"],["Strike",w.strike?"$"+w.strike:"—"],["Expiry",w.expiry||"—"],["Premium Collected","$"+(w.total_premium_collected||0).toFixed(2),"green"],["Cycles",w.cycles||0]];
-    return `<tr class="clickable" ${modalAttr(s,"Wheel Strategy",rows,why)}><td><b>${s}</b></td>
+    const onclick=`openModal(${JSON.stringify(s)},"Wheel Strategy",${JSON.stringify(rows)},${JSON.stringify(why)})`;
+    return `<tr class="clickable" onclick="${onclick}"><td><b>${s}</b></td>
     <td>${w.stage===1?"1 — CSP":"2 — Covered Call"}</td>
     <td>${w.contract_symbol||"<span class='dim'>none</span>"}</td>
     <td>${w.strike?("$"+w.strike):"—"}</td><td>${w.expiry||"—"}</td>
@@ -478,7 +448,8 @@ document.getElementById("pivot").innerHTML = ps.length ?
       `Entry near ${fmt$(s.est_entry)}, stop below the sweep at ${fmt$(s.stop_price)}, `+
       `2:1 target at ${fmt$(s.target_price)}. Total risk: ${fmt$(s.est_total_risk)}.`;
     const rows=[["Est. Entry",fmt$(s.est_entry)],["Stop",fmt$(s.stop_price)],["Target",fmt$(s.target_price)],["Qty",s.qty],["Max Risk",fmt$(s.est_total_risk)],["Status",s.status]];
-    return `<tr class="clickable" ${modalAttr(s.symbol,"Sneaky Pivot",rows,why)}><td><b>${s.symbol}</b></td><td>${fmt$(s.est_entry)}</td><td>${fmt$(s.stop_price)}</td>
+    const onclick=`openModal(${JSON.stringify(s.symbol)},"Sneaky Pivot",${JSON.stringify(rows)},${JSON.stringify(why)})`;
+    return `<tr class="clickable" onclick="${onclick}"><td><b>${s.symbol}</b></td><td>${fmt$(s.est_entry)}</td><td>${fmt$(s.stop_price)}</td>
     <td>${fmt$(s.target_price)}</td><td>${s.qty}</td><td>${fmt$(s.est_total_risk)}</td><td>${s.status}</td>
     <td class="dim" style="font-size:11px">ℹ click</td></tr>`;
   }).join("") + "</table></div>"
@@ -497,7 +468,8 @@ document.getElementById("gap").innerHTML = gs.length ?
       `Entry at open (9:32 AM), stop below the gap at ${fmt$(s.stop_price)}, `+
       `target ${fmt$(s.target_price)} (2:1 R:R). Hard close by 11 AM.`;
     const rows=[["Gap %","+"+s.gap_pct+"%","green"],["Has News",s.has_news?"Yes 📰":"No"],["Stop",fmt$(s.stop_price)],["Target",fmt$(s.target_price)],["Qty",s.qty],["Status",s.status]];
-    return `<tr class="clickable" ${modalAttr(s.symbol,"Gap and Go",rows,why)}><td><b>${s.symbol}</b></td><td class="green">+${s.gap_pct}%</td><td>${fmt$(s.stop_price)}</td>
+    const onclick=`openModal(${JSON.stringify(s.symbol)},"Gap and Go",${JSON.stringify(rows)},${JSON.stringify(why)})`;
+    return `<tr class="clickable" onclick="${onclick}"><td><b>${s.symbol}</b></td><td class="green">+${s.gap_pct}%</td><td>${fmt$(s.stop_price)}</td>
     <td>${fmt$(s.target_price)}</td><td>${s.qty}</td><td>${s.has_news?"📰":"—"}</td><td>${s.status}</td>
     <td class="dim" style="font-size:11px">ℹ click</td></tr>`;
   }).join("") + "</table></div>"
