@@ -157,9 +157,9 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
 
 <div class="grid two-col">
   <div class="section">
-    <div class="strategy-head"><h3>🏛️ Congressional Trades</h3><span id="congress-badge"></span></div>
-    <div class="strategy-desc">Mirrors politician stock buys from Capitol Trades. Max 2 positions/day,
-    $1,000 per pick, 2.5% trailing stop. Exits early if the politician sells.</div>
+    <div class="strategy-head"><h3>📉 RSI Mean-Reversion</h3><span id="congress-badge"></span></div>
+    <div class="strategy-desc">Buys liquid names that are sharply oversold (RSI-2 &lt; 10) while still
+    above their 200-day trend. Bracket exit: take-profit at the 5-day SMA, −6% stop, 7-day time stop.</div>
     <div id="congress"></div>
   </div>
   <div class="section">
@@ -199,20 +199,20 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
 
     <div class="strat-item">
       <button class="strat-toggle" onclick="toggleStrat(this)">
-        🏛️ Congressional Trade Mirror <span class="arrow">▼</span>
+        📉 RSI-2 Mean Reversion <span class="arrow">▼</span>
       </button>
       <div class="strat-body">
-        <p>Politicians disclose stock trades within 45 days of execution under the STOCK Act.
-        Research shows a consistent alpha — they tend to buy before favorable legislation or contracts.
-        This strategy piggybacks on those filings automatically.</p>
+        <p>Short-term mean reversion is one of the most robustly documented retail edges: when a liquid
+        stock in an uptrend gets sharply oversold, it tends to bounce back toward its average within a few
+        days. This is the Connors RSI-2 approach — buy fear, sell the reversion.</p>
         <dl>
-          <dt>Data source</dt><dd>Capitol Trades API, filtered for BUY disclosures in the last 7 days</dd>
-          <dt>Stock scoring</dt><dd>Score = filing count × recency × size weight. Only top 2 picks traded per day.</dd>
-          <dt>Position size</dt><dd>$1,000 per pick (fixed), up to 2 simultaneous positions</dd>
-          <dt>Entry</dt><dd>Market order at 9:30 AM, day of the morning report</dd>
-          <dt>Exit</dt><dd>2.5% trailing stop loss, held all day. Also exits immediately if the same politician files a SELL on the same ticker.</dd>
-          <dt>Daily loss cap</dt><dd>$500 max loss — halts the strategy for the day if hit</dd>
-          <dt>Edge</dt><dd>Political insider signal — not illegal to follow public disclosures</dd>
+          <dt>Data source</dt><dd>Alpaca daily bars for ~52 liquid large-caps & sector ETFs</dd>
+          <dt>Entry filter</dt><dd>Price above its 200-day SMA (uptrend) AND RSI-2 below 10 (oversold). Most oversold names first, max 3 positions.</dd>
+          <dt>Position size</dt><dd>Up to $1,000 per position, max $100 risked per trade</dd>
+          <dt>Entry</dt><dd>Bracket market order at the open (9:33 AM)</dd>
+          <dt>Exit</dt><dd>Take-profit at the 5-day SMA (reversion to the mean) or a −6% hard stop — managed automatically as an Alpaca OCO bracket.</dd>
+          <dt>Time stop</dt><dd>Closed after 7 days if it never reverts</dd>
+          <dt>Edge</dt><dd>Mean reversion — buying short-term oversold extremes in uptrends</dd>
         </dl>
       </div>
     </div>
@@ -286,12 +286,12 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
   <h2>The Overall Plan</h2>
   <p><b>Goal:</b> prove out four independent automated strategies with fake money against live market
   data, building a track record before any real capital is considered.</p>
-  <p><b>Diversification of edge:</b> each strategy exploits a different inefficiency — political
-  insider signal (Congressional), volatility premium selling (Wheel), liquidity-sweep reversals
-  (Sneaky Pivot), and opening momentum (Gap &amp; Go). They rarely correlate: a bad day for momentum
-  can still be a good day for premium collection.</p>
+  <p><b>Diversification of edge:</b> each strategy exploits a different inefficiency — short-term
+  mean reversion (RSI-2), volatility premium selling (Wheel), liquidity-sweep reversals
+  (Sneaky Pivot), and opening momentum (Gap &amp; Go). They rarely correlate: mean reversion buys
+  weakness while the others buy strength, so a bad day for one is often a good day for another.</p>
   <p><b>Risk framework:</b> every strategy passes through <code>risk_guard</code> — $300 intraday
-  loss limit, $5,000 max invested, plus a $500 daily loss cap on the congressional runner. Any halt
+  loss limit, $5,000 max invested across all strategies. Any halt
   requires a manual review and an explicit <code>resume_trading.py</code> — nothing auto-resumes
   after losses.</p>
   <p><b>Operations:</b> everything runs in Docker on the NAS via supercronic, scripts are wrapped by
@@ -313,12 +313,12 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
 </div>
 
 <div class="section">
-  <h2>Congressional Runner — Daily Log</h2>
+  <h2>RSI Mean-Reversion — Trade Log</h2>
   <div id="daily-history"></div>
 </div>
 
 <script>
-const D = {"generated_at": "2026-06-23 19:45:00", "account": {"equity": 99072.77, "last_equity": 99094.75, "cash": 94420.31, "buying_power": 388881.72, "day_pnl": -21.98, "day_pnl_pct": -0.02}, "history": [{"date": "2026-05-18", "equity": 100000.0}, {"date": "2026-05-19", "equity": 100000.0}, {"date": "2026-05-20", "equity": 100000.0}, {"date": "2026-05-21", "equity": 100000.0}, {"date": "2026-05-22", "equity": 100000.0}, {"date": "2026-05-26", "equity": 100000.0}, {"date": "2026-05-27", "equity": 100000.0}, {"date": "2026-05-28", "equity": 100000.0}, {"date": "2026-05-29", "equity": 100000.0}, {"date": "2026-06-01", "equity": 100000.0}, {"date": "2026-06-02", "equity": 100000.0}, {"date": "2026-06-03", "equity": 100000.0}, {"date": "2026-06-04", "equity": 100000.0}, {"date": "2026-06-05", "equity": 99958.82}, {"date": "2026-06-08", "equity": 99965.14}, {"date": "2026-06-09", "equity": 99317.3}, {"date": "2026-06-10", "equity": 99310.21}, {"date": "2026-06-11", "equity": 99322.57}, {"date": "2026-06-12", "equity": 99308.88}, {"date": "2026-06-15", "equity": 99309.3}, {"date": "2026-06-16", "equity": 99246.49}, {"date": "2026-06-17", "equity": 99133.22}, {"date": "2026-06-18", "equity": 99095.77}, {"date": "2026-06-22", "equity": 99094.75}], "growth": {"start": 100000.0, "end": 99094.75, "abs": -905.25, "pct": -0.91, "days": 24}, "positions": [{"symbol": "DIA", "qty": "3", "side": "long", "asset_class": "us_equity", "avg_entry": 509.63, "current": 516.2, "market_val": 1548.6, "unreal_pnl": 19.71, "unreal_pct": 1.29}, {"symbol": "GOOGL", "qty": "2", "side": "long", "asset_class": "us_equity", "avg_entry": 348.39, "current": 347.48, "market_val": 694.96, "unreal_pnl": -1.82, "unreal_pct": -0.26}, {"symbol": "SNAP260702P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.62, "market_val": -62.0, "unreal_pnl": -53.0, "unreal_pct": -588.89}, {"symbol": "SPY", "qty": "2", "side": "long", "asset_class": "us_equity", "avg_entry": 735.54, "current": 733.63, "market_val": 1467.26, "unreal_pnl": -3.82, "unreal_pct": -0.26}, {"symbol": "T", "qty": "44", "side": "long", "asset_class": "us_equity", "avg_entry": 22.33, "current": 22.81, "market_val": 1003.64, "unreal_pnl": 21.0, "unreal_pct": 2.14}], "halt": {"date": "2026-06-23", "time": "17:00:02", "reason": "losing_day_eod", "day_pnl": -18.3, "review_required": true}, "wheel_state": {"SNAP": {"symbol": "SNAP", "stage": 1, "qty": 1, "contract_symbol": "SNAP260702P00005000", "contract_type": "put", "strike": 5.0, "expiry": "2026-07-02", "entry_premium": 0.09, "cost_basis": null, "total_premium_collected": 18.0, "cycles": 1, "current_cycle_start": "2026-06-05T09:58:16.778508", "log": [{"time": "2026-06-08T09:46:37.891324", "msg": "Opened CSP SNAP260626P00005000 @ $0.09  total premium: $9.00"}, {"time": "2026-06-09T10:40:36.807292", "msg": "PUT closed early at $0.04 (55.6% profit). Total premium: $9.00"}, {"time": "2026-06-09T10:40:40.292245", "msg": "Opened CSP SNAP260702P00005000 @ $0.09  total premium: $18.00"}], "status": "active"}, "SOFI": {"symbol": "SOFI", "stage": 1, "qty": 1, "contract_symbol": null, "contract_type": null, "strike": null, "expiry": null, "entry_premium": null, "cost_basis": null, "total_premium_collected": 0.0, "cycles": 0, "current_cycle_start": "2026-06-05T10:12:27.852618", "log": []}}, "pivot_setups": [], "pivot_log": [], "gap_setups_raw": {"date": "2026-06-23", "scanned_at": "2026-06-23T12:50:00.842205+00:00", "total_found": 0, "setups": []}, "gap_log": [{"date": "2026-06-12", "symbol": "LCID", "gap_pct": 2.42, "prev_close": 5.17, "entry": 5.295, "exit": 5.16, "qty": 377, "pnl": -50.89, "pnl_pct": -2.55, "r_multiple": -0.77, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-12", "symbol": "RIVN", "gap_pct": 3.73, "prev_close": 15.54, "entry": 16.01, "exit": 15.91, "qty": 124, "pnl": -12.4, "pnl_pct": -0.62, "r_multiple": -0.16, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-15", "symbol": "RIVN", "gap_pct": 7.85, "prev_close": 15.54, "entry": 16.84, "exit": 16.78, "qty": 108, "pnl": -6.48, "pnl_pct": -0.36, "r_multiple": -0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-15", "symbol": "HOOD", "gap_pct": 5.69, "prev_close": 92.25, "entry": 99.08, "exit": 99.76, "qty": 20, "pnl": 13.6, "pnl_pct": 0.69, "r_multiple": 0.09, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-15", "symbol": "MSTR", "gap_pct": 9.72, "prev_close": 120.22, "entry": 134.25, "exit": 132.52, "qty": 11, "pnl": -19.03, "pnl_pct": -1.29, "r_multiple": -0.11, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}], "congress_picks": [{"symbol": "T", "action": "buy", "asset_type": "stock", "score": 61.4, "price": 22.35, "filed_date": "05 Jun 2026", "size": "15k", "politician": "David J. Taylor", "consensus": 2, "qty": 44}, {"symbol": "GOOGL", "action": "buy", "asset_type": "stock", "score": 61.4, "price": 342.47, "filed_date": "05 Jun 2026", "size": "15k", "politician": "David J. Taylor", "consensus": 2, "qty": 2}, {"symbol": "META", "action": "buy", "asset_type": "stock", "score": 60.2, "price": 562.83, "filed_date": "04 Jun 2026", "size": "15k", "politician": "John Mcguire", "consensus": 2, "qty": 1}, {"symbol": "FMAO", "action": "buy", "asset_type": "stock", "score": 55.2, "price": 28.645, "filed_date": "04 Jun 2026", "size": "50k", "politician": "Robert E. Latta", "consensus": 1, "qty": 34}], "daily_log": [{"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [], "status": "no_picks"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"MSFT": "error: 'charmap' codec can't encode character '\\u2192' in position 53: character maps to <undefined>", "T": "error: 'charmap' codec can't encode character '\\u2192' in position 52: character maps to <undefined>"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}, {"date": "2026-06-05", "picks": [{"symbol": "MSFT", "asset_type": "stock", "score": 99.6, "qty": 2}, {"symbol": "T", "asset_type": "stock", "score": 76.4, "qty": 20}], "results": {"T": "error: [Errno 22] Invalid argument", "MSFT": "error: [Errno 22] Invalid argument"}, "status": "completed"}, {"date": "2026-06-15", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-15", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-15", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-15", "picks": [], "status": "no_budget"}, {"date": "2026-06-15", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-16", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-17", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-18", "picks": [], "status": "halted_risk_guard"}, {"date": "2026-06-22", "picks": [], "status": "no_picks"}, {"date": "2026-06-23", "picks": [{"symbol": "T", "asset_type": "stock", "score": 61.4, "qty": 44, "resumed": false}, {"symbol": "GOOGL", "asset_type": "stock", "score": 61.4, "qty": 2, "resumed": false}], "results": {"T": "completed", "GOOGL": "completed"}, "status": "completed"}]};
+const D = {"generated_at": "2026-06-23 19:50:00", "account": {"equity": 99080.0, "last_equity": 99094.75, "cash": 94420.31, "buying_power": 388901.97, "day_pnl": -14.75, "day_pnl_pct": -0.01}, "history": [{"date": "2026-05-18", "equity": 100000.0}, {"date": "2026-05-19", "equity": 100000.0}, {"date": "2026-05-20", "equity": 100000.0}, {"date": "2026-05-21", "equity": 100000.0}, {"date": "2026-05-22", "equity": 100000.0}, {"date": "2026-05-26", "equity": 100000.0}, {"date": "2026-05-27", "equity": 100000.0}, {"date": "2026-05-28", "equity": 100000.0}, {"date": "2026-05-29", "equity": 100000.0}, {"date": "2026-06-01", "equity": 100000.0}, {"date": "2026-06-02", "equity": 100000.0}, {"date": "2026-06-03", "equity": 100000.0}, {"date": "2026-06-04", "equity": 100000.0}, {"date": "2026-06-05", "equity": 99958.82}, {"date": "2026-06-08", "equity": 99965.14}, {"date": "2026-06-09", "equity": 99317.3}, {"date": "2026-06-10", "equity": 99310.21}, {"date": "2026-06-11", "equity": 99322.57}, {"date": "2026-06-12", "equity": 99308.88}, {"date": "2026-06-15", "equity": 99309.3}, {"date": "2026-06-16", "equity": 99246.49}, {"date": "2026-06-17", "equity": 99133.22}, {"date": "2026-06-18", "equity": 99095.77}, {"date": "2026-06-22", "equity": 99094.75}], "growth": {"start": 100000.0, "end": 99094.75, "abs": -905.25, "pct": -0.91, "days": 24}, "positions": [{"symbol": "DIA", "qty": "3", "side": "long", "asset_class": "us_equity", "avg_entry": 509.63, "current": 516.47, "market_val": 1549.41, "unreal_pnl": 20.52, "unreal_pct": 1.34}, {"symbol": "GOOGL", "qty": "2", "side": "long", "asset_class": "us_equity", "avg_entry": 348.39, "current": 348.92, "market_val": 697.84, "unreal_pnl": 1.06, "unreal_pct": 0.15}, {"symbol": "SNAP260702P00005000", "qty": "-1", "side": "short", "asset_class": "us_option", "avg_entry": 0.09, "current": 0.62, "market_val": -62.0, "unreal_pnl": -53.0, "unreal_pct": -588.89}, {"symbol": "SPY", "qty": "2", "side": "long", "asset_class": "us_equity", "avg_entry": 735.54, "current": 735.18, "market_val": 1470.36, "unreal_pnl": -0.72, "unreal_pct": -0.05}, {"symbol": "T", "qty": "44", "side": "long", "asset_class": "us_equity", "avg_entry": 22.33, "current": 22.82, "market_val": 1004.08, "unreal_pnl": 21.44, "unreal_pct": 2.18}], "halt": {"date": "2026-06-23", "time": "17:00:02", "reason": "losing_day_eod", "day_pnl": -18.3, "review_required": true}, "wheel_state": {"SNAP": {"symbol": "SNAP", "stage": 1, "qty": 1, "contract_symbol": "SNAP260702P00005000", "contract_type": "put", "strike": 5.0, "expiry": "2026-07-02", "entry_premium": 0.09, "cost_basis": null, "total_premium_collected": 18.0, "cycles": 1, "current_cycle_start": "2026-06-05T09:58:16.778508", "log": [{"time": "2026-06-08T09:46:37.891324", "msg": "Opened CSP SNAP260626P00005000 @ $0.09  total premium: $9.00"}, {"time": "2026-06-09T10:40:36.807292", "msg": "PUT closed early at $0.04 (55.6% profit). Total premium: $9.00"}, {"time": "2026-06-09T10:40:40.292245", "msg": "Opened CSP SNAP260702P00005000 @ $0.09  total premium: $18.00"}], "status": "active"}, "SOFI": {"symbol": "SOFI", "stage": 1, "qty": 1, "contract_symbol": null, "contract_type": null, "strike": null, "expiry": null, "entry_premium": null, "cost_basis": null, "total_premium_collected": 0.0, "cycles": 0, "current_cycle_start": "2026-06-05T10:12:27.852618", "log": []}}, "pivot_setups": [], "pivot_log": [], "gap_setups_raw": {"date": "2026-06-23", "scanned_at": "2026-06-23T12:50:00.842205+00:00", "total_found": 0, "setups": []}, "gap_log": [{"date": "2026-06-12", "symbol": "LCID", "gap_pct": 2.42, "prev_close": 5.17, "entry": 5.295, "exit": 5.16, "qty": 377, "pnl": -50.89, "pnl_pct": -2.55, "r_multiple": -0.77, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-12", "symbol": "RIVN", "gap_pct": 3.73, "prev_close": 15.54, "entry": 16.01, "exit": 15.91, "qty": 124, "pnl": -12.4, "pnl_pct": -0.62, "r_multiple": -0.16, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-15", "symbol": "RIVN", "gap_pct": 7.85, "prev_close": 15.54, "entry": 16.84, "exit": 16.78, "qty": 108, "pnl": -6.48, "pnl_pct": -0.36, "r_multiple": -0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-15", "symbol": "HOOD", "gap_pct": 5.69, "prev_close": 92.25, "entry": 99.08, "exit": 99.76, "qty": 20, "pnl": 13.6, "pnl_pct": 0.69, "r_multiple": 0.09, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-15", "symbol": "MSTR", "gap_pct": 9.72, "prev_close": 120.22, "entry": 134.25, "exit": 132.52, "qty": 11, "pnl": -19.03, "pnl_pct": -1.29, "r_multiple": -0.11, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}], "rsi_setups": [{"symbol": "AVGO", "est_entry": 385.73, "rsi2": 6.28, "sma5": 445.06, "sma200": 355.78, "stop_price": 362.59, "target_price": 445.06, "qty": 2, "est_risk": 46.28, "status": "pending"}, {"symbol": "SMH", "est_entry": 569.82, "rsi2": 7.65, "sma5": 615.16, "sma200": 396.69, "stop_price": 535.63, "target_price": 615.16, "qty": 1, "est_risk": 34.19, "status": "pending"}, {"symbol": "INTC", "est_entry": 98.97, "rsi2": 8.04, "sma5": 108.14, "sma200": 51.27, "stop_price": 93.03, "target_price": 108.14, "qty": 10, "est_risk": 59.4, "status": "pending"}], "rsi_log": []};
 const fmt$ = n => (n<0?"-$":"$") + Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 const cls = n => n > 0 ? "green" : n < 0 ? "red" : "dim";
 const sign = n => (n>0?"+":"") ;
@@ -408,12 +408,12 @@ if ((D.positions||[]).length) {
   posEl.innerHTML = `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>Type</th><th>Qty</th><th>Avg Entry</th>
   <th>Current</th><th>Market Value</th><th>Unrealized P&amp;L</th><th></th></tr>` +
   D.positions.map(p=>{
-    const cp2 = (D.congress_picks||[]).find(c=>c.symbol===p.symbol);
+    const cp2 = (D.rsi_setups||[]).find(c=>c.symbol===p.symbol);
     const ws2 = (D.wheel_state||{})[p.symbol];
     const ps2 = (D.pivot_setups||[]).find(s=>s.symbol===p.symbol);
     const gs2 = ((D.gap_setups_raw||{}).setups||[]).find(s=>s.symbol===p.symbol);
     let strat="Open Position", why="This position is currently open in the account.";
-    if(cp2){strat="Congressional Trade";why=`Picked because <b>${cp2.politician||"a politician"}</b> filed a BUY disclosure. Score: ${cp2.score}. Trade size filed: ${cp2.size||"unknown"}.`;}
+    if(cp2){strat="RSI Mean-Reversion";why=`Bought oversold: RSI-2 was ${cp2.rsi2} while above the 200-day trend. Target ${fmt$(cp2.target_price)} (5-day SMA), stop ${fmt$(cp2.stop_price)}.`;}
     else if(ws2){strat="Wheel Strategy";why=`Stage ${ws2.stage===1?"1 (Cash-Secured Put)":"2 (Covered Call)"}. Contract: ${ws2.contract_symbol||"none"}. Strike $${ws2.strike||"?"}, expiry ${ws2.expiry||"?"}. Total premium collected: $${(ws2.total_premium_collected||0).toFixed(2)} over ${ws2.cycles||0} cycle(s).`;}
     else if(ps2){strat="Sneaky Pivot";why=`Liquidity sweep reversal pattern detected. Entry ${fmt$(ps2.est_entry)}, stop ${fmt$(ps2.stop_price)}, target ${fmt$(ps2.target_price)}. Risk: ${fmt$(ps2.est_total_risk)}.`;}
     else if(gs2){strat="Gap and Go";why=`Pre-market gap of +${gs2.gap_pct}%. ${gs2.has_news?"News catalyst present. ":"No confirmed news catalyst. "}Stop ${fmt$(gs2.stop_price)}, target ${fmt$(gs2.target_price)}.`;}
@@ -427,22 +427,21 @@ if ((D.positions||[]).length) {
   posEl.innerHTML = `<div class="muted-note">No open positions right now.</div>`;
 }
 
-// ── Congressional ─────────────────────────────────────────────────────────────
-const cp = D.congress_picks || [];
+// ── RSI Mean-Reversion ────────────────────────────────────────────────────────
+const cp = D.rsi_setups || [];
 document.getElementById("congress-badge").innerHTML =
-  cp.length ? `<span class="badge active">${cp.length} pick(s) today</span>` : `<span class="badge idle">no picks</span>`;
+  cp.length ? `<span class="badge active">${cp.length} setup(s) today</span>` : `<span class="badge idle">no setups</span>`;
 document.getElementById("congress").innerHTML = cp.length ?
-  `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>Score</th><th>Qty</th><th>Politician</th><th>Size</th><th></th></tr>` +
+  `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>RSI-2</th><th>Entry</th><th>Target</th><th>Stop</th><th>Qty</th><th></th></tr>` +
   cp.map(p=>{
-    const why=`<b>${p.politician||"A politician"}</b> filed a BUY disclosure on <b>${p.symbol}</b>. `+
-      `Score: ${p.score} (based on recency, trade size, and filing frequency). `+
-      `Trade size disclosed: ${p.size||"unknown"}. Qty to buy: ${p.qty}. `+
-      `Exits on a 2.5% trailing stop or if the same politician files a SELL.`;
-    const rows=[["Score",p.score],["Qty to Buy",p.qty],["Politician",p.politician||"?"],["Size Filed",p.size||"?"]];
-    return `<tr class="clickable" ${modalAttr(p.symbol,"Congressional Trade",rows,why)}><td><b>${p.symbol}</b></td><td>${p.score}</td><td>${p.qty}</td>
-    <td>${p.politician||"?"}</td><td>${p.size||"?"}</td><td class="dim hint">ℹ click</td></tr>`;
+    const why=`<b>${p.symbol}</b> is oversold — RSI-2 at ${p.rsi2} while still above its 200-day SMA `+
+      `(${fmt$(p.sma200)}). Buying ${p.qty} @ ~${fmt$(p.est_entry)}, target ${fmt$(p.target_price)} `+
+      `(5-day SMA), hard stop ${fmt$(p.stop_price)}. Managed as an Alpaca OCO bracket.`;
+    const rows=[["RSI-2",p.rsi2],["Entry",fmt$(p.est_entry)],["Target",fmt$(p.target_price)],["Stop",fmt$(p.stop_price)],["Qty",p.qty]];
+    return `<tr class="clickable" ${modalAttr(p.symbol,"RSI Mean-Reversion",rows,why)}><td><b>${p.symbol}</b></td><td>${p.rsi2}</td><td>${fmt$(p.est_entry)}</td>
+    <td>${fmt$(p.target_price)}</td><td>${fmt$(p.stop_price)}</td><td>${p.qty}</td><td class="dim hint">ℹ click</td></tr>`;
   }).join("") + "</table></div>"
-  : `<div class="muted-note">No qualifying congressional picks today.</div>`;
+  : `<div class="muted-note">No oversold RSI setups today.</div>`;
 
 // ── Wheel ─────────────────────────────────────────────────────────────────────
 const ws = D.wheel_state || {};
@@ -523,11 +522,13 @@ document.getElementById("gap-history").innerHTML = historyTable(D.gap_log, [
   {h:"Gap", f:r=>"+"+r.gap_pct+"%"}, {h:"Entry", f:r=>fmt$(r.entry)}, {h:"Exit", f:r=>fmt$(r.exit)},
   {h:"P&L", f:r=>sign(r.pnl)+fmt$(r.pnl), cls:r=>cls(r.pnl)},
   {h:"R", f:r=>(r.r_multiple>0?"+":"")+r.r_multiple+"R"}, {h:"Exit Reason", f:r=>r.exit_reason}]);
-document.getElementById("daily-history").innerHTML = historyTable(D.daily_log, [
-  {h:"Date", f:r=>r.date},
-  {h:"Picks", f:r=>(r.picks||[]).map(p=>p.symbol).join(", ")||"—"},
-  {h:"Status", f:r=>r.status},
-  {h:"Results", f:r=>r.results?Object.entries(r.results).map(([s,o])=>`${s}: ${o}`).join("<br>"):"—"}]);
+document.getElementById("daily-history").innerHTML = historyTable(D.rsi_log, [
+  {h:"Time", f:r=>(r.ts||"").slice(0,16).replace("T"," ")},
+  {h:"Symbol", f:r=>`<b>${r.symbol}</b>`},
+  {h:"Action", f:r=>r.reason},
+  {h:"RSI-2", f:r=>r.rsi2!=null?r.rsi2:"—"},
+  {h:"Target", f:r=>r.target!=null?fmt$(r.target):"—"},
+  {h:"Stop", f:r=>r.stop!=null?fmt$(r.stop):"—"}]);
 </script>
 </body>
 </html>
