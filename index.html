@@ -222,83 +222,59 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
 
     <div class="strat-item">
       <button class="strat-toggle" onclick="toggleStrat(this)">
-        📉 RSI-2 Mean Reversion <span class="arrow">▼</span>
+        🎡 Wheel — Diversified Book (Options) <span class="arrow">▼</span>
       </button>
       <div class="strat-body">
-        <p>Short-term mean reversion is one of the most robustly documented retail edges: when a liquid
-        stock in an uptrend gets sharply oversold, it tends to bounce back toward its average within a few
-        days. This is the Connors RSI-2 approach — buy fear, sell the reversion.</p>
-        <dl>
-          <dt>Data source</dt><dd>Alpaca daily bars for ~52 liquid large-caps & sector ETFs</dd>
-          <dt>Entry filter</dt><dd>Price above its 200-day SMA (uptrend) AND RSI-2 below 10 (oversold). Most oversold names first, max 3 positions.</dd>
-          <dt>Position size</dt><dd>Up to $1,000 per position, max $100 risked per trade</dd>
-          <dt>Entry</dt><dd>Bracket market order at the open (9:33 AM)</dd>
-          <dt>Exit</dt><dd>Take-profit at the 5-day SMA (reversion to the mean) or a −6% hard stop — managed automatically as an Alpaca OCO bracket.</dd>
-          <dt>Time stop</dt><dd>Closed after 7 days if it never reverts</dd>
-          <dt>Edge</dt><dd>Mean reversion — buying short-term oversold extremes in uptrends</dd>
-        </dl>
-      </div>
-    </div>
-
-    <div class="strat-item">
-      <button class="strat-toggle" onclick="toggleStrat(this)">
-        🎡 Wheel Strategy (Options) <span class="arrow">▼</span>
-      </button>
-      <div class="strat-body">
-        <p>The Wheel is a premium-collection loop using options on stocks you're comfortable owning.
-        It has two stages and cycles indefinitely, harvesting time-decay (theta) every 2–4 weeks.</p>
+        <p>The core strategy, and the one with a documented edge: selling insurance rather than buying it.
+        On average options are priced richer than the volatility that actually shows up — the "volatility risk
+        premium" — so a disciplined seller of cash-secured puts collects that spread over time. The CBOE PUT
+        index has matched the S&amp;P 500's return at roughly two-thirds of the risk since 1986.</p>
         <ul class="phases">
-          <li><strong>Stage 1 — Cash-Secured Put (CSP):</strong> Sell a put ~10% below current price,
-          14–28 DTE. Collect premium upfront. If it expires worthless, collect again. If assigned (stock drops to strike), take ownership at a discount.</li>
-          <li><strong>Stage 2 — Covered Call (CC):</strong> Now holding shares. Sell a call slightly above
-          cost basis, 14–28 DTE. Collect more premium. If called away (stock rises above strike), shares sold at a profit. Reset to Stage 1.</li>
+          <li><strong>Stage 1 — Cash-Secured Put:</strong> Sell a put below the current price (14–28 DTE) on
+          a liquid name and collect premium. Close at 50% of max profit and roll; if assigned, take the shares.</li>
+          <li><strong>Stage 2 — Covered Call:</strong> Holding shares, sell a call above cost basis for more
+          premium. If called away, book the gain and reset to Stage 1.</li>
         </ul>
         <dl>
-          <dt>Early exit</dt><dd>Close the option when 50% of max profit is reached (don't hold to expiry)</dd>
-          <dt>Symbols</dt><dd>Liquid, mid-cap stocks with good options volume and implied volatility</dd>
-          <dt>Edge</dt><dd>Volatility premium — options are priced slightly richer than realized vol on average</dd>
-          <dt>Risk</dt><dd>Assignment risk (owning a falling stock); managed by choosing solid underlying stocks</dd>
+          <dt>Book</dt><dd>Up to 10 diversified names at once (≤$25 stock), sized so total collateral fits the $25k cap</dd>
+          <dt>Cadence</dt><dd>Managed every 10 minutes — closes winners early, opens new puts as room allows</dd>
+          <dt>Execution</dt><dd>Limit orders with honest fill logging (records the actual fill, not the intended price)</dd>
+          <dt>Edge</dt><dd>Volatility risk premium — proven, and it scales with capital across names</dd>
         </dl>
       </div>
     </div>
 
     <div class="strat-item">
       <button class="strat-toggle" onclick="toggleStrat(this)">
-        🥷 Sneaky Pivot <span class="arrow">▼</span>
+        📈 Intraday Momentum — SPY <span class="arrow">▼</span>
       </button>
       <div class="strat-body">
-        <p>This pattern exploits a classic market manipulation sequence: "stop hunts" where price briefly
-        dips below a well-known support level to trigger retail stop-loss orders, then immediately reverses.
-        The reversal is the trade.</p>
+        <p>The one genuinely intraday edge with a top-journal pedigree (Gao, Han, Li &amp; Zhou,
+        <i>Journal of Financial Economics</i>, 2018): on the market index, the first half-hour's return
+        predicts the last half-hour's return in the same direction — strongest on high-volume, high-volatility,
+        and macro-news days.</p>
         <dl>
-          <dt>Setup (EOD)</dt><dd>Yesterday's candle swept below a prior swing low AND closed in the top 25% of its range on above-average volume</dd>
-          <dt>Entry</dt><dd>Market order at 9:31 AM. The setup is detected overnight so the bot is ready at open.</dd>
-          <dt>Stop</dt><dd>Below yesterday's low (the sweep point)</dd>
-          <dt>Target</dt><dd>2× the risk (2:1 R:R minimum). Trail activates once +1.5R is hit.</dd>
-          <dt>Max risk</dt><dd>$150 per trade</dd>
-          <dt>Holding time</dt><dd>Intraday to multi-day; closed by EOD if still open</dd>
-          <dt>Edge</dt><dd>Liquidity hunts are predictable — large players need to fill orders against stop clusters</dd>
+          <dt>Signal (10:00 AM)</dt><dd>Measure SPY's return over the first half hour (9:30 → 10:00)</dd>
+          <dt>Entry (3:30 PM)</dt><dd>Take a same-direction SPY position — long if the morning was up, short if down, flat if too weak</dd>
+          <dt>Exit (3:58 PM)</dt><dd>Flatten before the close. One deterministic trade a day.</dd>
+          <dt>Size</dt><dd>$5,000 notional, intraday only — flat every night</dd>
+          <dt>Edge</dt><dd>Late-day continuation of the morning move by informed traders and rebalancers</dd>
         </dl>
       </div>
     </div>
 
     <div class="strat-item">
       <button class="strat-toggle" onclick="toggleStrat(this)">
-        🚀 Gap and Go <span class="arrow">▼</span>
+        ⏸ Retired — RSI, Sneaky Pivot, Gap &amp; Go <span class="arrow">▼</span>
       </button>
       <div class="strat-body">
-        <p>Stocks that gap up significantly pre-market often continue higher in the first 30–90 minutes
-        as retail traders pile in. This strategy catches that opening momentum wave, then exits before it fades.</p>
-        <dl>
-          <dt>Scan (8:50 AM)</dt><dd>Finds stocks with ≥2% pre-market gap, above-average pre-market volume, and no open gap fill nearby</dd>
-          <dt>Confirmation</dt><dd>Bonus points for news catalyst (earnings beat, FDA approval, contract announcement)</dd>
-          <dt>Entry</dt><dd>Market order at 9:32 AM — after the first few chaotic seconds settle</dd>
-          <dt>Stop</dt><dd>Below the gap (the low before the gap-up candle)</dd>
-          <dt>Target</dt><dd>2× risk (2:1 R:R). Scaled out in two halves.</dd>
-          <dt>Hard exit</dt><dd>All positions closed by 11:00 AM regardless of outcome — momentum fades fast</dd>
-          <dt>Max risk</dt><dd>$150 per trade</dd>
-          <dt>Edge</dt><dd>Opening momentum + news-driven FOMO creates predictable short-term continuation</dd>
-        </dl>
+        <p>Three earlier strategies were paused on 2026-07-07. A forensic review found their apparent profits
+        were a <b>logging artifact</b> — P&amp;L was recorded against idealised signal prices, not actual fills.
+        Once real execution was counted, all three were net-negative: <b>Gap &amp; Go</b> alone bled
+        ~$2.15/trade to slippage (larger than its whole signal), and <b>Sneaky Pivot</b> chased entries well
+        past the setup price (a $151 signal filling at $164). <b>RSI-2</b> mean reversion was a crude,
+        cost-heavy version of a real anomaly. They're kept in the history below while the book is rebuilt
+        around edges with a documented, cost-surviving track record.</p>
       </div>
     </div>
 
@@ -307,41 +283,49 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
 
 <div class="section plan">
   <h2>The Overall Plan</h2>
-  <p><b>Goal:</b> prove out four independent automated strategies with fake money against live market
-  data, building a track record before any real capital is considered.</p>
-  <p><b>Diversification of edge:</b> each strategy exploits a different inefficiency — short-term
-  mean reversion (RSI-2), volatility premium selling (Wheel), liquidity-sweep reversals
-  (Sneaky Pivot), and opening momentum (Gap &amp; Go). They rarely correlate: mean reversion buys
-  weakness while the others buy strength, so a bad day for one is often a good day for another.</p>
-  <p><b>Risk framework:</b> every strategy passes through <code>risk_guard</code> — $300 intraday
-  loss limit, $25,000 max invested across all strategies. Any halt
-  requires a manual review and an explicit <code>resume_trading.py</code> — nothing auto-resumes
-  after losses.</p>
-  <p><b>Operations:</b> everything runs in Docker on the NAS via supercronic, scripts are wrapped by
-  a watchdog that emails on any crash, and code deploys automatically via git pull every 5 minutes.
-  Morning plan, end-of-day results, and a Friday scorecard arrive by email.</p>
-  <p><b>What success looks like:</b> consistent positive expectancy per strategy measured in
-  R-multiples, drawdowns contained by the risk caps, and zero unreviewed losing streaks.</p>
+  <p><b>Goal:</b> run only strategies with a documented, cost-surviving edge — proven on paper against live
+  market data before any real capital is considered.</p>
+  <p><b>The pivot (July 2026):</b> the original YouTube-sourced strategies were retired after a review showed
+  they had no real edge once slippage and honest fill-logging were counted — the profits lived in the logs,
+  not the account. The book was rebuilt around two evidence-based edges: the <b>volatility risk premium</b>
+  (the wheel) and <b>intraday momentum</b> (SPY).</p>
+  <p><b>Diversification of edge:</b> the wheel harvests option premium over weeks across many names; intraday
+  momentum takes a single daily directional bet on the index. The two are largely uncorrelated.</p>
+  <p><b>Risk framework:</b> a shared <b>$25,000</b> position cap enforced by <code>risk_guard</code>. A losing
+  day sets a halt that requires a manual <code>resume_trading.py</code> — nothing auto-resumes after losses.</p>
+  <p><b>Operations:</b> everything runs in Docker on the NAS via supercronic, scripts are watched for crashes,
+  and code deploys automatically via git pull. Morning plan, end-of-day results, and a Friday scorecard by email.</p>
+  <p><b>What success looks like:</b> the account's <b>real, post-fill equity</b> climbing over time — not the
+  churn of trades that look profitable in a log but aren't.</p>
 </div>
 
+<div class="section">
+  <h2>📈 Intraday Momentum — Trade Log</h2>
+  <div id="intraday-history"></div>
+</div>
+
+<div class="section">
+  <h2 style="margin-bottom:4px">Retired strategy history</h2>
+  <div class="strategy-desc">Trades from the strategies paused 2026-07-07, on the previous account. Kept for reference.</div>
+</div>
 <div class="grid two-col">
   <div class="section">
-    <h2>Recent Pivot Trades</h2>
+    <h2>Recent Pivot Trades <span style="color:#9ca3af;font-size:13px;font-weight:600">⏸ retired</span></h2>
     <div id="pivot-history"></div>
   </div>
   <div class="section">
-    <h2>Recent Gap Trades</h2>
+    <h2>Recent Gap Trades <span style="color:#9ca3af;font-size:13px;font-weight:600">⏸ retired</span></h2>
     <div id="gap-history"></div>
   </div>
 </div>
 
 <div class="section">
-  <h2>RSI Mean-Reversion — Trade Log</h2>
+  <h2>RSI Mean-Reversion — Trade Log <span style="color:#9ca3af;font-size:13px;font-weight:600">⏸ retired</span></h2>
   <div id="daily-history"></div>
 </div>
 
 <script>
-const D = {"generated_at": "2026-07-07 23:13:23", "account": {"equity": 25000.0, "last_equity": 25000.0, "cash": 25000.0, "buying_power": 100000.0, "day_pnl": 0.0, "day_pnl_pct": 0.0}, "history": [{"date": "2026-07-06", "equity": 25000.0}], "growth": {"start": 25000.0, "end": 25000.0, "abs": 0.0, "pct": 0.0, "days": 1}, "positions": [], "halt": null, "wheel_state": {}, "pivot_setups": [], "pivot_log": [{"date": "2026-07-01", "symbol": "NXPI", "entry_price": 281.03, "exit_price": 274.05, "stop_price": 274.42, "target": 294.25, "qty": 2, "reason": "HARD_STOP", "realized_pnl": -13.96, "pnl_pct": -2.48, "pnl_r": -1.06}, {"date": "2026-07-02", "symbol": "COIN", "entry_price": 151.4, "exit_price": 168.31, "stop_price": 145.57, "target": 163.06, "qty": 4, "reason": "TARGET_HIT", "realized_pnl": 67.64, "pnl_pct": 11.17, "pnl_r": 2.9}, {"date": "2026-07-02", "symbol": "CSCO", "entry_price": 117.01, "exit_price": 114.225, "stop_price": 114.42, "target": 122.19, "qty": 5, "reason": "HARD_STOP", "realized_pnl": -13.93, "pnl_pct": -2.38, "pnl_r": -1.08}, {"date": "2026-07-06", "symbol": "COIN", "entry_price": 151.4, "exit_price": 163.6, "stop_price": 145.57, "target": 163.06, "qty": 6, "reason": "TARGET_HIT", "realized_pnl": 73.2, "pnl_pct": 8.06, "pnl_r": 2.09}, {"date": "2026-07-06", "symbol": "NXPI", "entry_price": 281.03, "exit_price": 273.5, "stop_price": 274.42, "target": 294.25, "qty": 2, "reason": "HARD_STOP", "realized_pnl": -15.06, "pnl_pct": -2.68, "pnl_r": -1.14}], "gap_setups_raw": {"date": "2026-07-07", "scanned_at": "2026-07-07T12:50:01.689759+00:00", "total_found": 5, "setups": [{"symbol": "RIVN", "gap_pct": 8.0, "prev_close": 18.62, "premarket_px": 20.11, "premarket_vol": 1735029, "vol_ratio": 0.51, "stop_price": 18.43, "target_price": 23.47, "qty": 34, "est_risk": 57.12, "est_val": 683.74, "has_news": false, "news": [], "score": 12.06, "status": "pending", "scanned_at": "2026-07-07T12:50:00.894124+00:00"}, {"symbol": "LCID", "gap_pct": 9.38, "prev_close": 6.08, "premarket_px": 6.65, "premarket_vol": 98888, "vol_ratio": 0.19, "stop_price": 6.02, "target_price": 7.91, "qty": 105, "est_risk": 66.15, "est_val": 698.25, "has_news": false, "news": [], "score": 11.12, "status": "pending", "scanned_at": "2026-07-07T12:50:01.689695+00:00"}, {"symbol": "HOOD", "gap_pct": 4.35, "prev_close": 112.71, "premarket_px": 117.61, "premarket_vol": 1581129, "vol_ratio": 1.19, "stop_price": 111.58, "target_price": 129.67, "qty": 5, "est_risk": 30.15, "est_val": 588.05, "has_news": false, "news": [], "score": 9.51, "status": "pending", "scanned_at": "2026-07-07T12:50:01.563515+00:00"}, {"symbol": "PLTR", "gap_pct": 4.35, "prev_close": 129.18, "premarket_px": 134.8, "premarket_vol": 1000814, "vol_ratio": 0.55, "stop_price": 127.89, "target_price": 148.62, "qty": 5, "est_risk": 34.55, "est_val": 674.0, "has_news": false, "news": [], "score": 6.74, "status": "pending", "scanned_at": "2026-07-07T12:50:01.037158+00:00"}, {"symbol": "BAC", "gap_pct": 2.06, "prev_close": 58.69, "premarket_px": 59.9, "premarket_vol": 250049, "vol_ratio": 0.12, "stop_price": 58.1, "target_price": 63.5, "qty": 11, "est_risk": 19.8, "est_val": 658.9, "has_news": false, "news": [], "score": 2.31, "status": "pending", "scanned_at": "2026-07-07T12:50:00.775559+00:00"}]}, "gap_log": [{"date": "2026-06-29", "symbol": "PLTR", "gap_pct": 9.28, "prev_close": 107.3, "entry": 116.53, "exit": 117.58, "qty": 2, "pnl": 2.1, "pnl_pct": 0.9, "r_multiple": 0.1, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "LCID", "gap_pct": 8.75, "prev_close": 5.94, "entry": 6.43, "exit": 6.41, "qty": 51, "pnl": -1.02, "pnl_pct": -0.31, "r_multiple": -0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "MSTR", "gap_pct": 12.9, "prev_close": 82.04, "entry": 85.15, "exit": 84.02, "qty": 2, "pnl": -2.26, "pnl_pct": -1.33, "r_multiple": -0.29, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "RIVN", "gap_pct": 7.35, "prev_close": 15.64, "entry": 16.77, "exit": 16.94, "qty": 22, "pnl": 3.74, "pnl_pct": 1.01, "r_multiple": 0.13, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "LCID", "gap_pct": 2.46, "prev_close": 6.5, "entry": 6.59, "exit": 6.91, "qty": 105, "pnl": 33.6, "pnl_pct": 4.86, "r_multiple": 2.0, "exit_reason": "target_hit", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "PLTR", "gap_pct": 4.28, "prev_close": 115.66, "entry": 121.49, "exit": 127.39, "qty": 5, "pnl": 29.5, "pnl_pct": 4.86, "r_multiple": 0.84, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "RIVN", "gap_pct": 3.34, "prev_close": 16.79, "entry": 17.23, "exit": 17.41, "qty": 40, "pnl": 7.2, "pnl_pct": 1.04, "r_multiple": 0.3, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "HOOD", "gap_pct": 8.19, "prev_close": 100.28, "entry": 116.235, "exit": 115.46, "qty": 6, "pnl": -4.65, "pnl_pct": -0.67, "r_multiple": -0.05, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "MSTR", "gap_pct": 7.44, "prev_close": 86.93, "entry": 100.8, "exit": 101.57, "qty": 7, "pnl": 5.39, "pnl_pct": 0.76, "r_multiple": 0.05, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "PLTR", "gap_pct": 10.29, "prev_close": 116.7, "entry": 131.1, "exit": 130.05, "qty": 5, "pnl": -5.25, "pnl_pct": -0.8, "r_multiple": -0.07, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "SOFI", "gap_pct": 2.67, "prev_close": 17.95, "entry": 18.95, "exit": 18.02, "qty": 37, "pnl": -34.41, "pnl_pct": -4.91, "r_multiple": -0.79, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-06", "symbol": "MSTR", "gap_pct": 3.3, "prev_close": 93.39, "entry": 94.78, "exit": 99.76, "qty": 7, "pnl": 34.86, "pnl_pct": 5.25, "r_multiple": 2.15, "exit_reason": "target_hit", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "LCID", "gap_pct": 9.38, "prev_close": 6.08, "entry": 6.33, "exit": 6.01, "qty": 105, "pnl": -33.6, "pnl_pct": -5.06, "r_multiple": -1.03, "exit_reason": "stop_hit", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "PLTR", "gap_pct": 4.35, "prev_close": 129.18, "entry": 133.72, "exit": 133.96, "qty": 5, "pnl": 1.2, "pnl_pct": 0.18, "r_multiple": 0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "HOOD", "gap_pct": 4.35, "prev_close": 112.71, "entry": 116.975, "exit": 113.33, "qty": 5, "pnl": -18.22, "pnl_pct": -3.12, "r_multiple": -0.68, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}], "rsi_setups": [{"symbol": "WMT", "est_entry": 117.15, "rsi2": 5.24, "sma5": 118.88, "sma200": 116.56, "stop_price": 110.12, "target_price": 118.88, "qty": 4, "est_risk": 28.12, "status": "pending"}], "rsi_log": [{"symbol": "QCOM", "reason": "entry", "rsi2": 9.48, "target": 226.27, "stop": 193.06, "ts": "2026-06-26T09:33:07.183882"}, {"symbol": "XOM", "reason": "entry", "rsi2": 6.78, "target": 146.79, "stop": 132.42, "ts": "2026-07-02T09:33:07.046639"}, {"symbol": "WMT", "reason": "entry", "rsi2": 5.24, "target": 118.88, "stop": 110.12, "ts": "2026-07-06T09:33:03.709940"}, {"symbol": "WMT", "reason": "entry", "rsi2": 5.24, "target": 118.88, "stop": 110.12, "ts": "2026-07-07T09:33:04.295195"}], "llm_filter": [{"symbol": "RIVN", "keep": false, "reason": "Rivian announced a $1.7 billion stock offering. This dilutive capital raise materially impacts existing shareholders and creates a concrete near-term headwind for fresh long entries.", "strategy": "Gap"}, {"symbol": "BAC", "keep": true, "reason": "Banking sector deal exploration and analyst upgrades with price target raises are positive signals. No concrete negative catalysts present.", "strategy": "Gap"}, {"symbol": "HOOD", "keep": true, "reason": "Trump accounts and crypto initiatives represent positive news flow for the business. No concrete negative catalysts or binary risks present.", "strategy": "Gap"}, {"symbol": "LCID", "keep": true, "reason": "Q2 delivery beat and leadership changes are operational updates. No binary catalysts or imminent earnings dates flagged that would warrant veto.", "strategy": "Gap"}, {"symbol": "PLTR", "keep": true, "reason": "Enterprise expansion and positive analyst commentary are constructive. No material negative catalysts or binary risks identified.", "strategy": "Gap"}, {"symbol": "WMT", "keep": true, "reason": "Positive news about price cuts and promotional activities. No earnings announcement imminent, no litigation, no going-concern issues, no material negative catalysts. Price competition and promotional activity are routine business matters, not landmines for entry.", "strategy": "RSI"}]};
+const D = {"generated_at": "2026-07-07 23:36:57", "account": {"equity": 25000.0, "last_equity": 25000.0, "cash": 25000.0, "buying_power": 100000.0, "day_pnl": 0.0, "day_pnl_pct": 0.0}, "history": [{"date": "2026-07-06", "equity": 25000.0}], "growth": {"start": 25000.0, "end": 25000.0, "abs": 0.0, "pct": 0.0, "days": 1}, "positions": [], "halt": null, "wheel_state": {}, "pivot_setups": [], "pivot_log": [{"date": "2026-07-01", "symbol": "NXPI", "entry_price": 281.03, "exit_price": 274.05, "stop_price": 274.42, "target": 294.25, "qty": 2, "reason": "HARD_STOP", "realized_pnl": -13.96, "pnl_pct": -2.48, "pnl_r": -1.06}, {"date": "2026-07-02", "symbol": "COIN", "entry_price": 151.4, "exit_price": 168.31, "stop_price": 145.57, "target": 163.06, "qty": 4, "reason": "TARGET_HIT", "realized_pnl": 67.64, "pnl_pct": 11.17, "pnl_r": 2.9}, {"date": "2026-07-02", "symbol": "CSCO", "entry_price": 117.01, "exit_price": 114.225, "stop_price": 114.42, "target": 122.19, "qty": 5, "reason": "HARD_STOP", "realized_pnl": -13.93, "pnl_pct": -2.38, "pnl_r": -1.08}, {"date": "2026-07-06", "symbol": "COIN", "entry_price": 151.4, "exit_price": 163.6, "stop_price": 145.57, "target": 163.06, "qty": 6, "reason": "TARGET_HIT", "realized_pnl": 73.2, "pnl_pct": 8.06, "pnl_r": 2.09}, {"date": "2026-07-06", "symbol": "NXPI", "entry_price": 281.03, "exit_price": 273.5, "stop_price": 274.42, "target": 294.25, "qty": 2, "reason": "HARD_STOP", "realized_pnl": -15.06, "pnl_pct": -2.68, "pnl_r": -1.14}], "gap_setups_raw": {"date": "2026-07-07", "scanned_at": "2026-07-07T12:50:01.689759+00:00", "total_found": 5, "setups": [{"symbol": "RIVN", "gap_pct": 8.0, "prev_close": 18.62, "premarket_px": 20.11, "premarket_vol": 1735029, "vol_ratio": 0.51, "stop_price": 18.43, "target_price": 23.47, "qty": 34, "est_risk": 57.12, "est_val": 683.74, "has_news": false, "news": [], "score": 12.06, "status": "pending", "scanned_at": "2026-07-07T12:50:00.894124+00:00"}, {"symbol": "LCID", "gap_pct": 9.38, "prev_close": 6.08, "premarket_px": 6.65, "premarket_vol": 98888, "vol_ratio": 0.19, "stop_price": 6.02, "target_price": 7.91, "qty": 105, "est_risk": 66.15, "est_val": 698.25, "has_news": false, "news": [], "score": 11.12, "status": "pending", "scanned_at": "2026-07-07T12:50:01.689695+00:00"}, {"symbol": "HOOD", "gap_pct": 4.35, "prev_close": 112.71, "premarket_px": 117.61, "premarket_vol": 1581129, "vol_ratio": 1.19, "stop_price": 111.58, "target_price": 129.67, "qty": 5, "est_risk": 30.15, "est_val": 588.05, "has_news": false, "news": [], "score": 9.51, "status": "pending", "scanned_at": "2026-07-07T12:50:01.563515+00:00"}, {"symbol": "PLTR", "gap_pct": 4.35, "prev_close": 129.18, "premarket_px": 134.8, "premarket_vol": 1000814, "vol_ratio": 0.55, "stop_price": 127.89, "target_price": 148.62, "qty": 5, "est_risk": 34.55, "est_val": 674.0, "has_news": false, "news": [], "score": 6.74, "status": "pending", "scanned_at": "2026-07-07T12:50:01.037158+00:00"}, {"symbol": "BAC", "gap_pct": 2.06, "prev_close": 58.69, "premarket_px": 59.9, "premarket_vol": 250049, "vol_ratio": 0.12, "stop_price": 58.1, "target_price": 63.5, "qty": 11, "est_risk": 19.8, "est_val": 658.9, "has_news": false, "news": [], "score": 2.31, "status": "pending", "scanned_at": "2026-07-07T12:50:00.775559+00:00"}]}, "gap_log": [{"date": "2026-06-29", "symbol": "PLTR", "gap_pct": 9.28, "prev_close": 107.3, "entry": 116.53, "exit": 117.58, "qty": 2, "pnl": 2.1, "pnl_pct": 0.9, "r_multiple": 0.1, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "LCID", "gap_pct": 8.75, "prev_close": 5.94, "entry": 6.43, "exit": 6.41, "qty": 51, "pnl": -1.02, "pnl_pct": -0.31, "r_multiple": -0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "MSTR", "gap_pct": 12.9, "prev_close": 82.04, "entry": 85.15, "exit": 84.02, "qty": 2, "pnl": -2.26, "pnl_pct": -1.33, "r_multiple": -0.29, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "RIVN", "gap_pct": 7.35, "prev_close": 15.64, "entry": 16.77, "exit": 16.94, "qty": 22, "pnl": 3.74, "pnl_pct": 1.01, "r_multiple": 0.13, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "LCID", "gap_pct": 2.46, "prev_close": 6.5, "entry": 6.59, "exit": 6.91, "qty": 105, "pnl": 33.6, "pnl_pct": 4.86, "r_multiple": 2.0, "exit_reason": "target_hit", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "PLTR", "gap_pct": 4.28, "prev_close": 115.66, "entry": 121.49, "exit": 127.39, "qty": 5, "pnl": 29.5, "pnl_pct": 4.86, "r_multiple": 0.84, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "RIVN", "gap_pct": 3.34, "prev_close": 16.79, "entry": 17.23, "exit": 17.41, "qty": 40, "pnl": 7.2, "pnl_pct": 1.04, "r_multiple": 0.3, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "HOOD", "gap_pct": 8.19, "prev_close": 100.28, "entry": 116.235, "exit": 115.46, "qty": 6, "pnl": -4.65, "pnl_pct": -0.67, "r_multiple": -0.05, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "MSTR", "gap_pct": 7.44, "prev_close": 86.93, "entry": 100.8, "exit": 101.57, "qty": 7, "pnl": 5.39, "pnl_pct": 0.76, "r_multiple": 0.05, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "PLTR", "gap_pct": 10.29, "prev_close": 116.7, "entry": 131.1, "exit": 130.05, "qty": 5, "pnl": -5.25, "pnl_pct": -0.8, "r_multiple": -0.07, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "SOFI", "gap_pct": 2.67, "prev_close": 17.95, "entry": 18.95, "exit": 18.02, "qty": 37, "pnl": -34.41, "pnl_pct": -4.91, "r_multiple": -0.79, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-06", "symbol": "MSTR", "gap_pct": 3.3, "prev_close": 93.39, "entry": 94.78, "exit": 99.76, "qty": 7, "pnl": 34.86, "pnl_pct": 5.25, "r_multiple": 2.15, "exit_reason": "target_hit", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "LCID", "gap_pct": 9.38, "prev_close": 6.08, "entry": 6.33, "exit": 6.01, "qty": 105, "pnl": -33.6, "pnl_pct": -5.06, "r_multiple": -1.03, "exit_reason": "stop_hit", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "PLTR", "gap_pct": 4.35, "prev_close": 129.18, "entry": 133.72, "exit": 133.96, "qty": 5, "pnl": 1.2, "pnl_pct": 0.18, "r_multiple": 0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "HOOD", "gap_pct": 4.35, "prev_close": 112.71, "entry": 116.975, "exit": 113.33, "qty": 5, "pnl": -18.22, "pnl_pct": -3.12, "r_multiple": -0.68, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}], "rsi_setups": [{"symbol": "WMT", "est_entry": 117.15, "rsi2": 5.24, "sma5": 118.88, "sma200": 116.56, "stop_price": 110.12, "target_price": 118.88, "qty": 4, "est_risk": 28.12, "status": "pending"}], "rsi_log": [{"symbol": "QCOM", "reason": "entry", "rsi2": 9.48, "target": 226.27, "stop": 193.06, "ts": "2026-06-26T09:33:07.183882"}, {"symbol": "XOM", "reason": "entry", "rsi2": 6.78, "target": 146.79, "stop": 132.42, "ts": "2026-07-02T09:33:07.046639"}, {"symbol": "WMT", "reason": "entry", "rsi2": 5.24, "target": 118.88, "stop": 110.12, "ts": "2026-07-06T09:33:03.709940"}, {"symbol": "WMT", "reason": "entry", "rsi2": 5.24, "target": 118.88, "stop": 110.12, "ts": "2026-07-07T09:33:04.295195"}], "intraday_log": [], "llm_filter": [{"symbol": "RIVN", "keep": false, "reason": "Rivian announced a $1.7 billion stock offering. This dilutive capital raise materially impacts existing shareholders and creates a concrete near-term headwind for fresh long entries.", "strategy": "Gap"}, {"symbol": "BAC", "keep": true, "reason": "Banking sector deal exploration and analyst upgrades with price target raises are positive signals. No concrete negative catalysts present.", "strategy": "Gap"}, {"symbol": "HOOD", "keep": true, "reason": "Trump accounts and crypto initiatives represent positive news flow for the business. No concrete negative catalysts or binary risks present.", "strategy": "Gap"}, {"symbol": "LCID", "keep": true, "reason": "Q2 delivery beat and leadership changes are operational updates. No binary catalysts or imminent earnings dates flagged that would warrant veto.", "strategy": "Gap"}, {"symbol": "PLTR", "keep": true, "reason": "Enterprise expansion and positive analyst commentary are constructive. No material negative catalysts or binary risks identified.", "strategy": "Gap"}, {"symbol": "WMT", "keep": true, "reason": "Positive news about price cuts and promotional activities. No earnings announcement imminent, no litigation, no going-concern issues, no material negative catalysts. Price competition and promotional activity are routine business matters, not landmines for entry.", "strategy": "RSI"}]};
 const fmt$ = n => (n<0?"-$":"$") + Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 const cls = n => n > 0 ? "green" : n < 0 ? "red" : "dim";
 const sign = n => (n>0?"+":"") ;
@@ -568,6 +552,15 @@ document.getElementById("daily-history").innerHTML = historyTable(D.rsi_log, [
   {h:"RSI-2", f:r=>r.rsi2!=null?r.rsi2:"—"},
   {h:"Target", f:r=>r.target!=null?fmt$(r.target):"—"},
   {h:"Stop", f:r=>r.stop!=null?fmt$(r.stop):"—"}]);
+document.getElementById("intraday-history").innerHTML = (D.intraday_log && D.intraday_log.length)
+  ? historyTable(D.intraday_log, [
+      {h:"Date", f:r=>r.date},
+      {h:"Action", f:r=>r.action},
+      {h:"Dir", f:r=>r.direction||"—"},
+      {h:"Qty", f:r=>r.qty!=null?r.qty:"—"},
+      {h:"Price", f:r=>fmt$(r.action==="exit"?r.exit_price:r.entry_price)},
+      {h:"P&L", f:r=>r.realized_pnl!=null?sign(r.realized_pnl)+fmt$(r.realized_pnl):"—", cls:r=>r.realized_pnl!=null?cls(r.realized_pnl):""}])
+  : `<div class="empty">No trades yet — the first signal fires at 10:00 AM, entry at 3:30 PM.</div>`;
 </script>
 </body>
 </html>
