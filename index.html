@@ -172,39 +172,6 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
   </div>
 </div>
 
-<div class="section">
-  <h2 style="margin-bottom:4px">Retired strategies</h2>
-  <div class="strategy-desc">Paused 2026-07-07. A forensic review showed these were net-negative once real
-  fills (slippage) were counted — their apparent profits were a logging artifact. Kept here for history while
-  the book is rebuilt around edges with a documented track record.</div>
-</div>
-<div class="grid two-col">
-  <div class="section">
-    <div class="strategy-head"><h3>📉 RSI Mean-Reversion <span style="color:#9ca3af;font-size:12px;font-weight:600">⏸ RETIRED</span></h3><span id="congress-badge"></span></div>
-    <div class="strategy-desc">Bought sharply oversold names (RSI-2 &lt; 10) above their 200-day trend. A crude
-    retail version of the real short-term-reversal anomaly — the single-name, market-order form bled to costs.</div>
-    <div id="congress"></div>
-  </div>
-  <div class="section">
-    <div class="strategy-head"><h3>🥷 Sneaky Pivot <span style="color:#9ca3af;font-size:12px;font-weight:600">⏸ RETIRED</span></h3><span id="pivot-badge"></span></div>
-    <div class="strategy-desc">Bought liquidity-sweep reversals. Entries were chased well past the setup price
-    by market orders (e.g. a $151 signal filling at $164), turning logged winners into real losers.</div>
-    <div id="pivot"></div>
-  </div>
-  <div class="section">
-    <div class="strategy-head"><h3>🚀 Gap and Go <span style="color:#9ca3af;font-size:12px;font-weight:600">⏸ RETIRED</span></h3><span id="gap-badge"></span></div>
-    <div class="strategy-desc">Bought pre-market gap-ups, closed by 11 AM. Market orders in and out bled
-    ~$2.15/trade to slippage — larger than the entire signal, making it a net loser.</div>
-    <div id="gap"></div>
-  </div>
-  <div class="section">
-    <div class="strategy-head"><h3>🧠 Claude News Filter <span style="color:#9ca3af;font-size:12px;font-weight:600">⏸ RETIRED</span></h3><span id="llm-badge"></span></div>
-    <div class="strategy-desc">Screened the mechanical candidates for landmines (earnings, probes, dilution) and
-    could only veto a pick. Tied to the retired RSI runner, so inactive until a stock strategy returns.</div>
-    <div id="llm-filter"></div>
-  </div>
-</div>
-
 <!-- Stock detail modal -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
@@ -263,21 +230,6 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
       </div>
     </div>
 
-    <div class="strat-item">
-      <button class="strat-toggle" onclick="toggleStrat(this)">
-        ⏸ Retired — RSI, Sneaky Pivot, Gap &amp; Go <span class="arrow">▼</span>
-      </button>
-      <div class="strat-body">
-        <p>Three earlier strategies were paused on 2026-07-07. A forensic review found their apparent profits
-        were a <b>logging artifact</b> — P&amp;L was recorded against idealised signal prices, not actual fills.
-        Once real execution was counted, all three were net-negative: <b>Gap &amp; Go</b> alone bled
-        ~$2.15/trade to slippage (larger than its whole signal), and <b>Sneaky Pivot</b> chased entries well
-        past the setup price (a $151 signal filling at $164). <b>RSI-2</b> mean reversion was a crude,
-        cost-heavy version of a real anomaly. They're kept in the history below while the book is rebuilt
-        around edges with a documented, cost-surviving track record.</p>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -304,28 +256,8 @@ tr.clickable:hover td{background:rgba(109,242,0,.06)}
   <div id="intraday-history"></div>
 </div>
 
-<div class="section">
-  <h2 style="margin-bottom:4px">Retired strategy history</h2>
-  <div class="strategy-desc">Trades from the strategies paused 2026-07-07, on the previous account. Kept for reference.</div>
-</div>
-<div class="grid two-col">
-  <div class="section">
-    <h2>Recent Pivot Trades <span style="color:#9ca3af;font-size:13px;font-weight:600">⏸ retired</span></h2>
-    <div id="pivot-history"></div>
-  </div>
-  <div class="section">
-    <h2>Recent Gap Trades <span style="color:#9ca3af;font-size:13px;font-weight:600">⏸ retired</span></h2>
-    <div id="gap-history"></div>
-  </div>
-</div>
-
-<div class="section">
-  <h2>RSI Mean-Reversion — Trade Log <span style="color:#9ca3af;font-size:13px;font-weight:600">⏸ retired</span></h2>
-  <div id="daily-history"></div>
-</div>
-
 <script>
-const D = {"generated_at": "2026-07-07 23:36:57", "account": {"equity": 25000.0, "last_equity": 25000.0, "cash": 25000.0, "buying_power": 100000.0, "day_pnl": 0.0, "day_pnl_pct": 0.0}, "history": [{"date": "2026-07-06", "equity": 25000.0}], "growth": {"start": 25000.0, "end": 25000.0, "abs": 0.0, "pct": 0.0, "days": 1}, "positions": [], "halt": null, "wheel_state": {}, "pivot_setups": [], "pivot_log": [{"date": "2026-07-01", "symbol": "NXPI", "entry_price": 281.03, "exit_price": 274.05, "stop_price": 274.42, "target": 294.25, "qty": 2, "reason": "HARD_STOP", "realized_pnl": -13.96, "pnl_pct": -2.48, "pnl_r": -1.06}, {"date": "2026-07-02", "symbol": "COIN", "entry_price": 151.4, "exit_price": 168.31, "stop_price": 145.57, "target": 163.06, "qty": 4, "reason": "TARGET_HIT", "realized_pnl": 67.64, "pnl_pct": 11.17, "pnl_r": 2.9}, {"date": "2026-07-02", "symbol": "CSCO", "entry_price": 117.01, "exit_price": 114.225, "stop_price": 114.42, "target": 122.19, "qty": 5, "reason": "HARD_STOP", "realized_pnl": -13.93, "pnl_pct": -2.38, "pnl_r": -1.08}, {"date": "2026-07-06", "symbol": "COIN", "entry_price": 151.4, "exit_price": 163.6, "stop_price": 145.57, "target": 163.06, "qty": 6, "reason": "TARGET_HIT", "realized_pnl": 73.2, "pnl_pct": 8.06, "pnl_r": 2.09}, {"date": "2026-07-06", "symbol": "NXPI", "entry_price": 281.03, "exit_price": 273.5, "stop_price": 274.42, "target": 294.25, "qty": 2, "reason": "HARD_STOP", "realized_pnl": -15.06, "pnl_pct": -2.68, "pnl_r": -1.14}], "gap_setups_raw": {"date": "2026-07-07", "scanned_at": "2026-07-07T12:50:01.689759+00:00", "total_found": 5, "setups": [{"symbol": "RIVN", "gap_pct": 8.0, "prev_close": 18.62, "premarket_px": 20.11, "premarket_vol": 1735029, "vol_ratio": 0.51, "stop_price": 18.43, "target_price": 23.47, "qty": 34, "est_risk": 57.12, "est_val": 683.74, "has_news": false, "news": [], "score": 12.06, "status": "pending", "scanned_at": "2026-07-07T12:50:00.894124+00:00"}, {"symbol": "LCID", "gap_pct": 9.38, "prev_close": 6.08, "premarket_px": 6.65, "premarket_vol": 98888, "vol_ratio": 0.19, "stop_price": 6.02, "target_price": 7.91, "qty": 105, "est_risk": 66.15, "est_val": 698.25, "has_news": false, "news": [], "score": 11.12, "status": "pending", "scanned_at": "2026-07-07T12:50:01.689695+00:00"}, {"symbol": "HOOD", "gap_pct": 4.35, "prev_close": 112.71, "premarket_px": 117.61, "premarket_vol": 1581129, "vol_ratio": 1.19, "stop_price": 111.58, "target_price": 129.67, "qty": 5, "est_risk": 30.15, "est_val": 588.05, "has_news": false, "news": [], "score": 9.51, "status": "pending", "scanned_at": "2026-07-07T12:50:01.563515+00:00"}, {"symbol": "PLTR", "gap_pct": 4.35, "prev_close": 129.18, "premarket_px": 134.8, "premarket_vol": 1000814, "vol_ratio": 0.55, "stop_price": 127.89, "target_price": 148.62, "qty": 5, "est_risk": 34.55, "est_val": 674.0, "has_news": false, "news": [], "score": 6.74, "status": "pending", "scanned_at": "2026-07-07T12:50:01.037158+00:00"}, {"symbol": "BAC", "gap_pct": 2.06, "prev_close": 58.69, "premarket_px": 59.9, "premarket_vol": 250049, "vol_ratio": 0.12, "stop_price": 58.1, "target_price": 63.5, "qty": 11, "est_risk": 19.8, "est_val": 658.9, "has_news": false, "news": [], "score": 2.31, "status": "pending", "scanned_at": "2026-07-07T12:50:00.775559+00:00"}]}, "gap_log": [{"date": "2026-06-29", "symbol": "PLTR", "gap_pct": 9.28, "prev_close": 107.3, "entry": 116.53, "exit": 117.58, "qty": 2, "pnl": 2.1, "pnl_pct": 0.9, "r_multiple": 0.1, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "LCID", "gap_pct": 8.75, "prev_close": 5.94, "entry": 6.43, "exit": 6.41, "qty": 51, "pnl": -1.02, "pnl_pct": -0.31, "r_multiple": -0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "MSTR", "gap_pct": 12.9, "prev_close": 82.04, "entry": 85.15, "exit": 84.02, "qty": 2, "pnl": -2.26, "pnl_pct": -1.33, "r_multiple": -0.29, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-06-30", "symbol": "RIVN", "gap_pct": 7.35, "prev_close": 15.64, "entry": 16.77, "exit": 16.94, "qty": 22, "pnl": 3.74, "pnl_pct": 1.01, "r_multiple": 0.13, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "LCID", "gap_pct": 2.46, "prev_close": 6.5, "entry": 6.59, "exit": 6.91, "qty": 105, "pnl": 33.6, "pnl_pct": 4.86, "r_multiple": 2.0, "exit_reason": "target_hit", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "PLTR", "gap_pct": 4.28, "prev_close": 115.66, "entry": 121.49, "exit": 127.39, "qty": 5, "pnl": 29.5, "pnl_pct": 4.86, "r_multiple": 0.84, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-01", "symbol": "RIVN", "gap_pct": 3.34, "prev_close": 16.79, "entry": 17.23, "exit": 17.41, "qty": 40, "pnl": 7.2, "pnl_pct": 1.04, "r_multiple": 0.3, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "HOOD", "gap_pct": 8.19, "prev_close": 100.28, "entry": 116.235, "exit": 115.46, "qty": 6, "pnl": -4.65, "pnl_pct": -0.67, "r_multiple": -0.05, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "MSTR", "gap_pct": 7.44, "prev_close": 86.93, "entry": 100.8, "exit": 101.57, "qty": 7, "pnl": 5.39, "pnl_pct": 0.76, "r_multiple": 0.05, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "PLTR", "gap_pct": 10.29, "prev_close": 116.7, "entry": 131.1, "exit": 130.05, "qty": 5, "pnl": -5.25, "pnl_pct": -0.8, "r_multiple": -0.07, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-02", "symbol": "SOFI", "gap_pct": 2.67, "prev_close": 17.95, "entry": 18.95, "exit": 18.02, "qty": 37, "pnl": -34.41, "pnl_pct": -4.91, "r_multiple": -0.79, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-06", "symbol": "MSTR", "gap_pct": 3.3, "prev_close": 93.39, "entry": 94.78, "exit": 99.76, "qty": 7, "pnl": 34.86, "pnl_pct": 5.25, "r_multiple": 2.15, "exit_reason": "target_hit", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "LCID", "gap_pct": 9.38, "prev_close": 6.08, "entry": 6.33, "exit": 6.01, "qty": 105, "pnl": -33.6, "pnl_pct": -5.06, "r_multiple": -1.03, "exit_reason": "stop_hit", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "PLTR", "gap_pct": 4.35, "prev_close": 129.18, "entry": 133.72, "exit": 133.96, "qty": 5, "pnl": 1.2, "pnl_pct": 0.18, "r_multiple": 0.04, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}, {"date": "2026-07-07", "symbol": "HOOD", "gap_pct": 4.35, "prev_close": 112.71, "entry": 116.975, "exit": 113.33, "qty": 5, "pnl": -18.22, "pnl_pct": -3.12, "r_multiple": -0.68, "exit_reason": "time_stop_1100", "strategy": "gap_and_go"}], "rsi_setups": [{"symbol": "WMT", "est_entry": 117.15, "rsi2": 5.24, "sma5": 118.88, "sma200": 116.56, "stop_price": 110.12, "target_price": 118.88, "qty": 4, "est_risk": 28.12, "status": "pending"}], "rsi_log": [{"symbol": "QCOM", "reason": "entry", "rsi2": 9.48, "target": 226.27, "stop": 193.06, "ts": "2026-06-26T09:33:07.183882"}, {"symbol": "XOM", "reason": "entry", "rsi2": 6.78, "target": 146.79, "stop": 132.42, "ts": "2026-07-02T09:33:07.046639"}, {"symbol": "WMT", "reason": "entry", "rsi2": 5.24, "target": 118.88, "stop": 110.12, "ts": "2026-07-06T09:33:03.709940"}, {"symbol": "WMT", "reason": "entry", "rsi2": 5.24, "target": 118.88, "stop": 110.12, "ts": "2026-07-07T09:33:04.295195"}], "intraday_log": [], "llm_filter": [{"symbol": "RIVN", "keep": false, "reason": "Rivian announced a $1.7 billion stock offering. This dilutive capital raise materially impacts existing shareholders and creates a concrete near-term headwind for fresh long entries.", "strategy": "Gap"}, {"symbol": "BAC", "keep": true, "reason": "Banking sector deal exploration and analyst upgrades with price target raises are positive signals. No concrete negative catalysts present.", "strategy": "Gap"}, {"symbol": "HOOD", "keep": true, "reason": "Trump accounts and crypto initiatives represent positive news flow for the business. No concrete negative catalysts or binary risks present.", "strategy": "Gap"}, {"symbol": "LCID", "keep": true, "reason": "Q2 delivery beat and leadership changes are operational updates. No binary catalysts or imminent earnings dates flagged that would warrant veto.", "strategy": "Gap"}, {"symbol": "PLTR", "keep": true, "reason": "Enterprise expansion and positive analyst commentary are constructive. No material negative catalysts or binary risks identified.", "strategy": "Gap"}, {"symbol": "WMT", "keep": true, "reason": "Positive news about price cuts and promotional activities. No earnings announcement imminent, no litigation, no going-concern issues, no material negative catalysts. Price competition and promotional activity are routine business matters, not landmines for entry.", "strategy": "RSI"}]};
+const D = {"generated_at": "2026-07-07 23:47:27", "account": {"equity": 25000.0, "last_equity": 25000.0, "cash": 25000.0, "buying_power": 100000.0, "day_pnl": 0.0, "day_pnl_pct": 0.0}, "history": [{"date": "2026-07-06", "equity": 25000.0}], "growth": {"start": 25000.0, "end": 25000.0, "abs": 0.0, "pct": 0.0, "days": 1}, "positions": [], "halt": null, "wheel_state": {}, "intraday_log": []};
 const fmt$ = n => (n<0?"-$":"$") + Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 const cls = n => n > 0 ? "green" : n < 0 ? "red" : "dim";
 const sign = n => (n>0?"+":"") ;
@@ -415,15 +347,10 @@ if ((D.positions||[]).length) {
   posEl.innerHTML = `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>Type</th><th>Qty</th><th>Avg Entry</th>
   <th>Current</th><th>Market Value</th><th>Unrealized P&amp;L</th><th></th></tr>` +
   D.positions.map(p=>{
-    const cp2 = (D.rsi_setups||[]).find(c=>c.symbol===p.symbol);
     const ws2 = (D.wheel_state||{})[p.symbol];
-    const ps2 = (D.pivot_setups||[]).find(s=>s.symbol===p.symbol);
-    const gs2 = ((D.gap_setups_raw||{}).setups||[]).find(s=>s.symbol===p.symbol);
     let strat="Open Position", why="This position is currently open in the account.";
-    if(cp2){strat="RSI Mean-Reversion";why=`Bought oversold: RSI-2 was ${cp2.rsi2} while above the 200-day trend. Target ${fmt$(cp2.target_price)} (5-day SMA), stop ${fmt$(cp2.stop_price)}.`;}
-    else if(ws2){strat="Wheel Strategy";why=`Stage ${ws2.stage===1?"1 (Cash-Secured Put)":"2 (Covered Call)"}. Contract: ${ws2.contract_symbol||"none"}. Strike $${ws2.strike||"?"}, expiry ${ws2.expiry||"?"}. Total premium collected: $${(ws2.total_premium_collected||0).toFixed(2)} over ${ws2.cycles||0} cycle(s).`;}
-    else if(ps2){strat="Sneaky Pivot";why=`Liquidity sweep reversal pattern detected. Entry ${fmt$(ps2.est_entry)}, stop ${fmt$(ps2.stop_price)}, target ${fmt$(ps2.target_price)}. Risk: ${fmt$(ps2.est_total_risk)}.`;}
-    else if(gs2){strat="Gap and Go";why=`Pre-market gap of +${gs2.gap_pct}%. ${gs2.has_news?"News catalyst present. ":"No confirmed news catalyst. "}Stop ${fmt$(gs2.stop_price)}, target ${fmt$(gs2.target_price)}.`;}
+    if(ws2){strat="Wheel Strategy";why=`Stage ${ws2.stage===1?"1 (Cash-Secured Put)":"2 (Covered Call)"}. Contract: ${ws2.contract_symbol||"none"}. Strike $${ws2.strike||"?"}, expiry ${ws2.expiry||"?"}. Total premium collected: $${(ws2.total_premium_collected||0).toFixed(2)} over ${ws2.cycles||0} cycle(s).`;}
+    else if(p.symbol==="SPY"){strat="Intraday Momentum";why="SPY position from the intraday-momentum strategy — a same-direction bet on the last half hour, opened at 3:30 PM and flattened by the close.";}
     const rows=[["Type",p.asset_class==="us_option"?"Option":"Stock"],["Qty",p.qty],["Avg Entry",fmt$(p.avg_entry)],["Current Price",fmt$(p.current)],["Market Value",fmt$(p.market_val)],["Unrealized P&L",sign(p.unreal_pnl)+fmt$(p.unreal_pnl)+" ("+sign(p.unreal_pct)+p.unreal_pct+"%)",cls(p.unreal_pnl)]];
     return `<tr class="clickable" ${modalAttr(p.symbol,strat,rows,why)}><td><b>${p.symbol}</b></td><td>${p.asset_class==="us_option"?"Option":"Stock"}</td>
     <td>${p.qty}</td><td>${fmt$(p.avg_entry)}</td><td>${fmt$(p.current)}</td><td>${fmt$(p.market_val)}</td>
@@ -433,22 +360,6 @@ if ((D.positions||[]).length) {
 } else {
   posEl.innerHTML = `<div class="muted-note">No open positions right now.</div>`;
 }
-
-// ── RSI Mean-Reversion ────────────────────────────────────────────────────────
-const cp = D.rsi_setups || [];
-document.getElementById("congress-badge").innerHTML =
-  cp.length ? `<span class="badge active">${cp.length} setup(s) today</span>` : `<span class="badge idle">no setups</span>`;
-document.getElementById("congress").innerHTML = cp.length ?
-  `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>RSI-2</th><th>Entry</th><th>Target</th><th>Stop</th><th>Qty</th><th></th></tr>` +
-  cp.map(p=>{
-    const why=`<b>${p.symbol}</b> is oversold — RSI-2 at ${p.rsi2} while still above its 200-day SMA `+
-      `(${fmt$(p.sma200)}). Buying ${p.qty} @ ~${fmt$(p.est_entry)}, target ${fmt$(p.target_price)} `+
-      `(5-day SMA), hard stop ${fmt$(p.stop_price)}. Managed as an Alpaca OCO bracket.`;
-    const rows=[["RSI-2",p.rsi2],["Entry",fmt$(p.est_entry)],["Target",fmt$(p.target_price)],["Stop",fmt$(p.stop_price)],["Qty",p.qty]];
-    return `<tr class="clickable" ${modalAttr(p.symbol,"RSI Mean-Reversion",rows,why)}><td><b>${p.symbol}</b></td><td>${p.rsi2}</td><td>${fmt$(p.est_entry)}</td>
-    <td>${fmt$(p.target_price)}</td><td>${fmt$(p.stop_price)}</td><td>${p.qty}</td><td class="dim hint">ℹ click</td></tr>`;
-  }).join("") + "</table></div>"
-  : `<div class="muted-note">No oversold RSI setups today.</div>`;
 
 // ── Wheel ─────────────────────────────────────────────────────────────────────
 const ws = D.wheel_state || {};
@@ -477,81 +388,12 @@ document.getElementById("wheel").innerHTML = wheelSyms.length ?
     <td class="dim hint">ℹ click</td></tr>`;}).join("") + "</table></div>"
   : `<div class="muted-note">No wheel positions yet.</div>`;
 
-// ── Pivot ─────────────────────────────────────────────────────────────────────
-const ps = D.pivot_setups || [];
-document.getElementById("pivot-badge").innerHTML =
-  ps.length ? `<span class="badge active">${ps.length} setup(s)</span>` : `<span class="badge idle">no setups</span>`;
-document.getElementById("pivot").innerHTML = ps.length ?
-  `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>Entry</th><th>Stop</th><th>Target</th><th>Qty</th><th>Risk</th><th>Status</th><th></th></tr>` +
-  ps.map(s=>{
-    const why=`Yesterday's candle swept below a prior swing low then closed strong, signalling a liquidity grab reversal. `+
-      `Entry near ${fmt$(s.est_entry)}, stop below the sweep at ${fmt$(s.stop_price)}, `+
-      `2:1 target at ${fmt$(s.target_price)}. Total risk: ${fmt$(s.est_total_risk)}.`;
-    const rows=[["Est. Entry",fmt$(s.est_entry)],["Stop",fmt$(s.stop_price)],["Target",fmt$(s.target_price)],["Qty",s.qty],["Max Risk",fmt$(s.est_total_risk)],["Status",s.status]];
-    return `<tr class="clickable" ${modalAttr(s.symbol,"Sneaky Pivot",rows,why)}><td><b>${s.symbol}</b></td><td>${fmt$(s.est_entry)}</td><td>${fmt$(s.stop_price)}</td>
-    <td>${fmt$(s.target_price)}</td><td>${s.qty}</td><td>${fmt$(s.est_total_risk)}</td><td>${s.status}</td>
-    <td class="dim hint">ℹ click</td></tr>`;
-  }).join("") + "</table></div>"
-  : `<div class="muted-note">No qualifying pivot setups today — the pattern is selective by design.</div>`;
-
-// ── Gap ───────────────────────────────────────────────────────────────────────
-const gs = (D.gap_setups_raw||{}).setups || [];
-const gapDate = (D.gap_setups_raw||{}).date || "";
-document.getElementById("gap-badge").innerHTML =
-  gs.length ? `<span class="badge active">${gs.length} setup(s) ${gapDate}</span>` : `<span class="badge idle">no setups</span>`;
-document.getElementById("gap").innerHTML = gs.length ?
-  `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>Gap %</th><th>Stop</th><th>Target</th><th>Qty</th><th>News</th><th>Status</th><th></th></tr>` +
-  gs.map(s=>{
-    const why=`Gapped up +${s.gap_pct}% pre-market with above-average volume. `+
-      (s.has_news?"A news catalyst was detected, increasing confidence. ":"No confirmed news catalyst — pure volume/price setup. ")+
-      `Entry at open (9:32 AM), stop below the gap at ${fmt$(s.stop_price)}, `+
-      `target ${fmt$(s.target_price)} (2:1 R:R). Hard close by 11 AM.`;
-    const rows=[["Gap %","+"+s.gap_pct+"%","green"],["Has News",s.has_news?"Yes 📰":"No"],["Stop",fmt$(s.stop_price)],["Target",fmt$(s.target_price)],["Qty",s.qty],["Status",s.status]];
-    return `<tr class="clickable" ${modalAttr(s.symbol,"Gap and Go",rows,why)}><td><b>${s.symbol}</b></td><td class="green">+${s.gap_pct}%</td><td>${fmt$(s.stop_price)}</td>
-    <td>${fmt$(s.target_price)}</td><td>${s.qty}</td><td>${s.has_news?"📰":"—"}</td><td>${s.status}</td>
-    <td class="dim hint">ℹ click</td></tr>`;
-  }).join("") + "</table></div>"
-  : `<div class="muted-note">No qualifying gap setups for ${gapDate||"today"}.</div>`;
-
-// ── Claude News Filter ────────────────────────────────────────────────────────
-const lf = D.llm_filter || [];
-const vetoed = lf.filter(v=>!v.keep);
-document.getElementById("llm-badge").innerHTML = lf.length
-  ? (vetoed.length ? `<span class="badge active">${vetoed.length} vetoed</span>`
-                   : `<span class="badge active">${lf.length} screened · 0 vetoed</span>`)
-  : `<span class="badge idle">no screens today</span>`;
-document.getElementById("llm-filter").innerHTML = lf.length ?
-  `<div class="tbl-wrap"><table><tr><th>Symbol</th><th>Strategy</th><th>Verdict</th><th>Claude's reasoning</th></tr>` +
-  lf.map(v=>{
-    const badge = v.keep ? `<span class="green">✓ KEEP</span>` : `<span class="red"><b>✕ VETO</b></span>`;
-    return `<tr><td><b>${v.symbol}</b></td><td class="dim">${v.strategy||"—"}</td><td>${badge}</td>`+
-           `<td style="font-size:12px;color:#555">${v.reason||""}</td></tr>`;
-  }).join("") + "</table></div>"
-  : `<div class="muted-note">No candidates screened today (filter runs at entry on RSI, Gap & Pivot picks).</div>`;
-
 // Trade history tables
 function historyTable(rows, cols) {
   if (!rows || !rows.length) return `<div class="muted-note">No trades recorded yet.</div>`;
   return `<div class="tbl-wrap"><table><tr>${cols.map(c=>`<th>${c.h}</th>`).join("")}</tr>` +
     rows.slice().reverse().map(r=>`<tr>${cols.map(c=>`<td class="${c.cls?c.cls(r):''}">${c.f(r)}</td>`).join("")}</tr>`).join("") + "</table></div>";
 }
-document.getElementById("pivot-history").innerHTML = historyTable(D.pivot_log, [
-  {h:"Date", f:r=>r.date}, {h:"Symbol", f:r=>`<b>${r.symbol}</b>`},
-  {h:"Entry", f:r=>fmt$(r.entry_price)}, {h:"Exit", f:r=>fmt$(r.exit_price)},
-  {h:"P&L", f:r=>sign(r.realized_pnl)+fmt$(r.realized_pnl), cls:r=>cls(r.realized_pnl)},
-  {h:"R", f:r=>(r.pnl_r>0?"+":"")+r.pnl_r+"R"}, {h:"Reason", f:r=>r.reason}]);
-document.getElementById("gap-history").innerHTML = historyTable(D.gap_log, [
-  {h:"Date", f:r=>r.date}, {h:"Symbol", f:r=>`<b>${r.symbol}</b>`},
-  {h:"Gap", f:r=>"+"+r.gap_pct+"%"}, {h:"Entry", f:r=>fmt$(r.entry)}, {h:"Exit", f:r=>fmt$(r.exit)},
-  {h:"P&L", f:r=>sign(r.pnl)+fmt$(r.pnl), cls:r=>cls(r.pnl)},
-  {h:"R", f:r=>(r.r_multiple>0?"+":"")+r.r_multiple+"R"}, {h:"Exit Reason", f:r=>r.exit_reason}]);
-document.getElementById("daily-history").innerHTML = historyTable(D.rsi_log, [
-  {h:"Time", f:r=>(r.ts||"").slice(0,16).replace("T"," ")},
-  {h:"Symbol", f:r=>`<b>${r.symbol}</b>`},
-  {h:"Action", f:r=>r.reason},
-  {h:"RSI-2", f:r=>r.rsi2!=null?r.rsi2:"—"},
-  {h:"Target", f:r=>r.target!=null?fmt$(r.target):"—"},
-  {h:"Stop", f:r=>r.stop!=null?fmt$(r.stop):"—"}]);
 document.getElementById("intraday-history").innerHTML = (D.intraday_log && D.intraday_log.length)
   ? historyTable(D.intraday_log, [
       {h:"Date", f:r=>r.date},
